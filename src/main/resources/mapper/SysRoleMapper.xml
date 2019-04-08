@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.anytrek.ts3.mapper.SysRoleMapper">
+	<select id="getAllRoleList"
+		resultType="com.anytrek.ts3.model.SysRole">
+		<![CDATA[
+		select * from sys_role  where flag > -1 
+		]]>
+	</select>
+	<update id="deleteRole" parameterType="java.lang.Integer">
+		<![CDATA[update sys_role set flag = -1 where role_id = #{roleId}]]>
+	</update>
+</mapper>

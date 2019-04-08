@@ -1,0 +1,11 @@
+${AnsiColor.BRIGHT_BLUE}
+
+      .o.                               ooooooooooooo                    oooo        
+     .888.                              8'   888   `8                    `888        
+    .8"888.     ooo. .oo.   oooo    ooo      888      oooo d8b  .ooooo.   888  oooo  
+   .8' `888.    `888P"Y88b   `88.  .8'       888      `888""8P d88' `88b  888 .8P'   
+  .88ooo8888.    888   888    `88..8'        888       888     888ooo888  888888.    
+ .8'     `888.   888   888     `888'         888       888     888    .o  888 `88b.  
+o88o     o8888o o888o o888o     .8'         o888o     d888b    `Y8bod8P' o888o o888o 
+                            .o..P'                                                   
+                            `Y8P'                                                                                             

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.anytrek.ts3.mapper.UserMapper">
+
+	<!-- 判断用户名是否重复 -->
+	<select id="getRepeatUser"
+		parameterType="com.anytrek.ts3.model.User"
+		resultType="com.anytrek.ts3.model.User">
+		<![CDATA[select * from t_user]]>
+		<trim prefix="where" suffix="" prefixOverrides="and"
+			suffixOverrides="">
+			<if test="userId!=null and username!=null and email!=null">
+				<![CDATA[user_id!=#{userId} and (username=#{username} or email=#{email})]]>
+			</if>
+			<if test="userId!=null and username!=null and email==null">
+				<![CDATA[user_id!=#{userId} and username=#{username}]]>
+			</if>
+			<if test="userId==null and email!=null and username!=null">
+				<![CDATA[(email=#{email} or username=#{username})]]>
+			</if>
+			<if test="userId==null and email!=null and username==null">
+				<![CDATA[email=#{email}]]>
+			</if>
+			<![CDATA[ and flag > -1]]>
+		</trim>
+		limit 1
+	</select>
+
+	<!-- 根据用户名获取用户对象 -->
+	<select id="getUserByUsername" parameterType="java.lang.String"
+		resultType="com.anytrek.ts3.model.User">
+		<![CDATA[select * from t_user where username = #{username} and flag > -1 and activated = 1 limit 1]]>
+	</select>
+	<select id="getUserByKey" parameterType="java.lang.Object"
+		resultType="com.anytrek.ts3.model.User">
+		<![CDATA[
+		select * from t_user  where `key` =#{key} and flag > -1
+		]]>
+	</select>
+	<update id="updateUserKey" parameterType="java.lang.Object">
+		<![CDATA[
+		update t_user set `key` =#{key} ,expiration_date = date_add(now(), interval 7 day) where user_id = #{userId} and flag > -1
+		]]>
+	</update>
+
+	<select id="getUserByEmail" parameterType="java.lang.Object"
+		resultType="com.anytrek.ts3.model.User">
+		<![CDATA[
+		select * from t_user where email = #{email}  and flag > -1 limit 1
+		]]>
+	</select>
+
+	<!-- 获取登陆用户对应的角色允许创建哪些角色 -->
+	<select id="getValidRoleList"
+		resultType="com.anytrek.ts3.model.SysRole">
+		select * from sys_role where
+		role_id in
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+		and flag > -1
+	</select>
+
+	<select id="getUserListByParams"
+		parameterType="java.util.HashMap"
+		resultType="com.anytrek.ts3.dto.UserDetailDto">
+		select user.*, org.org_name ,role.role_name from t_user user
+		inner join t_organization org on org.org_id = user.org_id
+		inner join sys_role role on role.role_id = user.role_id
+		<trim prefix="where" suffix="" prefixOverrides="and"
+			suffixOverrides="">
+			<choose>
+				<when
+					test="(onlySelf == null or onlySelf == false) and orgId != null">
+	    			<![CDATA[  
+				    and (org.parents like '%-${orgId}-%' 
+				    or org.org_id=#{orgId})]]>
+				</when>
+				<when test="onlySelf == true and orgId != null">
+	    			<![CDATA[
+				    and org.org_id=#{orgId}]]>
+				</when>
+			</choose>
+			<if test="keyword!=null">
+				<![CDATA[and 
+					(user.username like '%${keyword}%' or user.email like '%${keyword}%'
+					or user.phone  like '%${keyword}%' or user.contacts  like '%${keyword}%' or org.org_name like '%${keyword}%' )  ]]>
+			</if>
+			<if test="roleId!=null"><![CDATA[and user.role_id = #{roleId}]]></if>
+			<![CDATA[and user.flag > -1]]>
+		</trim>
+		<![CDATA[order by user.user_id desc]]>
+	</select>
+	<select id="getNormalUserListByParams"
+		parameterType="java.util.HashMap"
+		resultType="com.anytrek.ts3.dto.UserDetailDto">
+		select user.*, org.org_name from t_user user
+		inner join t_organization org on org.org_id = user.org_id
+		<trim prefix="where" suffix="" prefixOverrides="and"
+			suffixOverrides="">
+			<choose>
+				<when
+					test="(onlySelf == null or onlySelf == false) and orgId != null">
+	    			<![CDATA[  
+				    and (org.parents like '%-${orgId}-%' 
+				    or org.org_id=#{orgId})]]>
+				</when>
+				<when test="onlySelf == true and orgId != null">
+	    			<![CDATA[
+				    and org.org_id=#{orgId}]]>
+				</when>
+			</choose>
+			<if test="keyword!=null">
+				<![CDATA[and 
+					(user.username like '%${keyword}%' or user.email like '%${keyword}%'
+					or org.org_name like '%${keyword}%' )  ]]>
+			</if>
+			<![CDATA[and user.flag > -1 and user.rold_id = #{roleId}]]>
+		</trim>
+		<choose>
+			<when test="orderBy == null"><![CDATA[ order by user.create_time desc  ]]></when>
+			<otherwise><![CDATA[ order by $orderBy$  ]]></otherwise>
+		</choose>
+	</select>
+	<select id="getUserListByRoleParams"
+		parameterType="java.util.HashMap"
+		resultType="com.anytrek.ts3.dto.UserDetailDto">
+		select user.* ,role.role_name from t_user user
+		inner join sys_role role on role.role_id = user.role_id
+		<trim prefix="where" suffix="" prefixOverrides="and"
+			suffixOverrides="">
+			<if test="username!=null"><![CDATA[and user.username like '%${username}%'  ]]></if>
+			<if test="roleId!=null"><![CDATA[and user.role_id = #{roleId}]]></if>
+			<![CDATA[and user.flag > -1]]>
+		</trim>
+		<![CDATA[order by user.user_id desc]]>
+	</select>
+	<select id="getUserByOrgId" parameterType="java.lang.Integer"
+		resultType="com.anytrek.ts3.dto.UserDetailDto">
+		<![CDATA[select user.* ,role.role_name from t_user user
+		inner join sys_role role on
+		role.role_id = user.role_id  where user.org_id=#{orgId} and user.activated=1 and user.flag > -1 ]]>
+	</select>
+	<!-- <select id="getUserByRoleId" parameterType="java.lang.Integer" resultType="com.anytrek.ts3.model.User"> 
+		<![CDATA[ select * from t_user where role_id=#{roleId} and flag > -1 ]]> 
+		</select> -->
+	<select id="getUserCountByRoleId"
+		parameterType="com.anytrek.ts3.model.User"
+		resultType="java.lang.Integer">
+		<![CDATA[
+		select count(user_id) from t_user  where role_id=#{roleId} and flag > -1 
+		]]>
+	</select>
+	
+	<update id="deleteUser" parameterType="java.lang.Integer">
+		<![CDATA[update t_user set flag = -1 where user_id = #{userId}]]>
+	</update>
+</mapper>

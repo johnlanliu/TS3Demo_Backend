@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.anytrek.ts3.mapper.SysDictMapper">
+
+
+
+	<select id="getDictListByParams"
+	resultType="com.anytrek.ts3.model.SysDict">
+		<![CDATA[
+		select * from sys_dict
+		]]>
+		<trim prefix="where" suffix="" prefixOverrides="and"
+			suffixOverrides="">
+			<if test="dictName != null"><![CDATA[ and dict_name=#{dictName}  ]]></if>
+			<if test="type != null"><![CDATA[and type = #{type} ]]></if>
+			<![CDATA[ and flag > -1]]>
+		</trim>
+	</select>
+
+	<select id="getDictById"
+		parameterType="java.lang.Integer"
+		resultType="com.anytrek.ts3.model.SysDict">
+		<![CDATA[
+		select * from sys_dict where dict_id=#{dictId} and flag > -1 limit 1
+		]]>
+	</select>
+	<!-- <select id="getAllRoleNoAdmin" parameterType="java.lang.Integer" resultType="com.anytrek.ts3.model.SysRoleDict"> 
+		<![CDATA[ select * from sys_Dict where role_id !=1 ]]> </select> -->
+	<update id="deleteDict" parameterType="java.lang.Integer">
+		<![CDATA[update sys_dict set flag = -1 where dict_id = #{dictId}]]>
+	</update>
+</mapper>

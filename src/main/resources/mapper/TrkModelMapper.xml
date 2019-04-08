@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.anytrek.ts3.mapper.TrkModelMapper">
+
+
+	<select id="getAllModel" resultType="com.anytrek.ts3.model.TrkModel">
+		<![CDATA[
+		select * from trk_model where flag > -1 order by model_name desc
+		]]>
+	</select>
+	<select id="getModelById" resultType="com.anytrek.ts3.model.TrkModel">
+		<![CDATA[
+		select * from trk_model where flag > -1 model_id=#{modelId}
+		]]>
+	</select>
+	<update id="deleteModel" parameterType="java.lang.Integer">
+		<![CDATA[update trk_model set flag = -1 where model_id=#{modelId}]]>
+	</update>
+</mapper>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.anytrek.ts3.mapper.TrkInfoMapper">
+
+	<select id="getPushUrlByDeviceId" parameterType="java.lang.Long"
+		resultType="java.lang.String">
+		<![CDATA[
+		select o.pushurl from t_organization o
+			inner join trk_info info on info.org_id = o.org_id
+			where device_id = #{deviceId} and o.flag > -1 limit 1
+		]]>
+	</select>
+	<select id="getDeviceCountByOrgId"
+		parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		<![CDATA[
+		select count(info.device_id) from trk_info info
+		inner join t_organization org on org.org_id = info.org_id
+		where (org.parents like CONCAT('%', #{orgId}, '%')
+			    or org.org_id = #{orgId})
+		]]>
+	</select>
+	<select id="getDeviceIdByOrgId"
+		parameterType="java.lang.Integer" resultType="java.lang.Long">
+		select info.device_id from trk_info info
+		inner join t_organization org on org.org_id = info.org_id
+		where (org.parents like CONCAT('%', #{orgId}, '%')
+			    or org.org_id = #{orgId})
+	</select>
+	<select id="getDevicesByBatchId"
+		parameterType="java.lang.Integer"
+		resultType="com.anytrek.ts3.model.TrkInfo">
+		<![CDATA[
+		select * from trk_info where batch_id = #{batchId} 
+		]]>
+	</select>
+
+	<select id="getDeviceListByParams"
+		parameterType="java.util.HashMap"
+		resultType="com.anytrek.ts3.dto.TrkInfoDetailDto">
+		select info.*, b.batch_name,model.model_name,
+		org.org_name,upd.file_name
+		from trk_info info
+		inner join t_organization
+		org on org.org_id = info.org_id
+		inner join trk_model model on
+		model.model_id = info.model_id
+		left join trk_batch b on
+		b.batch_id=info.batch_id
+		left join trk_update upd on upd.update_id =
+		info.update_id
+		<if test="invoiceId != null"><![CDATA[  
+	    left join t_order_items items on items.device_id = info.device_id
+	    left join t_order o on o.order_id = items.order_id
+	     ]]></if>
+		<trim prefix="where" suffix="" prefixOverrides="and"
+			suffixOverrides="">
+			<!-- <if test="deviceId != null"><![CDATA[ cast(info.device_id as char) 
+				like '%${deviceId}%' ]]></if> -->
+			<if test="deviceIdStart != null "><![CDATA[  and cast(info.device_id as char) like '%${deviceIdStart}%' ]]></if>
+			<!--<if test="deviceIdStart == null and deviceIdEnd != null"><![CDATA[ 
+				and info.device_id = #{deviceIdEnd} ]]></if> <if test="deviceIdStart != null 
+				and deviceIdEnd != null"><![CDATA[ and info.device_id <=#{deviceIdEnd} and 
+				info.device_id >=#{deviceIdStart} ]]></if> -->
+			<if test="invoiceId != null"><![CDATA[ and o.invoice=#{invoiceId}  ]]></if>
+			<if test="modelId != null"><![CDATA[and info.model_id = #{modelId} ]]></if>
+			<if test="state != null"><![CDATA[and info.state = #{state} ]]></if>
+			<if test="hwVer != null"><![CDATA[and info.hw_ver = #{hwVer} ]]></if>
+			<if test="fwVer != null"><![CDATA[and info.fw_ver = #{fwVer} ]]></if>
+			<if test="batchId != null"><![CDATA[and info.batch_id = #{batchId} ]]></if>
+			<if test="updateFlag != null"><![CDATA[and info.update_flag = #{updateFlag} ]]></if>
+			<!-- <if test="blVer != null"><![CDATA[and blver = #{blVer} ]]></if> <if -->
+			<if test="iccid != null"><![CDATA[and info.iccid = #{iccid} ]]></if>
+			<if test="speed != null"><![CDATA[and info.speed > #{speed} ]]></if>
+			<if test="reportTime != null"><![CDATA[and info.report_time > #{reportTime} ]]></if>
+			<if test="updateId != null and isUpdate ==0 "><![CDATA[and not info.update_id = #{updateId} ]]></if>
+			<if test="updateId != null and isUpdate ==1"><![CDATA[and info.update_id = #{updateId} ]]></if>
+			<if test="ignoreAcc != null"><![CDATA[and info.ignore_acc = #{ignoreAcc} ]]></if>
+
+			<if test="deviceIds != null">
+				and info.device_id in
+				<foreach collection="deviceIds" item="item" index="index"
+					open="(" close=")" separator=",">
+					#{item}
+				</foreach>
+			</if>
+
+			<choose>
+				<when
+					test="(onlySelf == null or onlySelf == false) and orgId != null">
+	    			<![CDATA[  
+				    and (org.parents like '%-${orgId}-%' 
+				    or org.org_id = #{orgId})]]>
+				</when>
+				<when test="onlySelf == true and orgId != null">
+	    			<![CDATA[
+				    and org.org_id = #{orgId}]]>
+				</when>
+			</choose>
+		</trim>
+		<choose>
+			<when test="orderBy == null"><![CDATA[ order by info.device_id desc  ]]></when>
+			<otherwise><![CDATA[ order by $orderBy$  ]]></otherwise>
+		</choose>
+	</select>
+	<select id="getDeviceListByUserId"
+		parameterType="java.lang.Integer"
+		resultType="com.anytrek.ts3.dto.TrkInfoDetailDto">
+		select info.*, b.batch_name,model.model_name,
+		org.org_name,upd.file_name
+		from trk_info info
+		inner join t_organization
+		org on org.org_id = info.org_id
+		inner join trk_model model on
+		model.model_id = info.model_id
+		left join trk_batch b on
+		b.batch_id=info.batch_id
+		left join trk_update upd on upd.update_id =
+		info.update_id
+		inner join m_vehicle v on v.device_id = info.device_id
+		inner join m_vehicle_bind bi on bi.vehicle_id = v.vehicle_id
+		where
+		bi.user_id = #{userId}
+		order by info.device_id desc 
+	</select>
+	<select id="getDeviceByDeviceId" parameterType="java.lang.Long"
+		resultType="com.anytrek.ts3.dto.TrkInfoDetailDto">
+		select info.*, b.batch_name,model.model_name,
+		org.org_name,upd.file_name
+		from
+		trk_info info
+		inner join t_organization
+		org on org.org_id = info.org_id
+		inner join trk_model model on
+		model.model_id = info.model_id
+		left join trk_batch b on
+		b.batch_id=info.batch_id
+		left join trk_update upd on upd.update_id =
+		info.update_id
+		where
+		info.device_id = #{deviceId}
+	</select>
+	<!-- <update id="deleteDevice" parameterType="java.lang.Long"> <![CDATA[update 
+		trk_info set flag = -1 where device_id = #{deviceId}]]> </update> -->
+</mapper>

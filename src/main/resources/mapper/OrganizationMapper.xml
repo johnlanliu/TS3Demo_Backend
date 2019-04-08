@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.anytrek.ts3.mapper.OrganizationMapper">
+
+	<!-- 修改公司的母公司时，须同时修改所有的子公司的树结构 -->
+	<update id="changeChildrenOrgParents" parameterType="java.util.HashMap">
+		update t_organization 
+			set parents=replace(parents, #{oldParents}, #{parents}) 
+			where (parents like '%-${orgId}-%') and flag>-1
+	</update>
+	
+	<select id="getOrgIdByOrgName" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		<![CDATA[
+			select org_id from t_organization 
+			where org_name = #{orgName} and flag >-1 limit 1; 
+		]]>
+	</select>
+	<select id="getChildrenList" parameterType="java.lang.String"
+		resultType="com.anytrek.ts3.dto.OrganizationDetailDto">
+		<![CDATA[
+			select * from t_organization org
+			where 
+			(org.parents like '%-${orgId}-%' 
+			    or org.org_id=#{orgId}) and flag>-1
+			    order by org.parents asc, org.org_name asc
+		]]>
+	</select>
+	<select id="getOrgByActivationKey"
+		parameterType="java.lang.Object"
+		resultType="com.anytrek.ts3.model.Organization">
+		<![CDATA[
+		select * from t_organization  where activation_key =#{activationKey} and flag>-1
+		]]>
+	</select>
+	
+	<!-- 更新key 用于注册partner时的邮箱验证 -->
+	<update id="updateOrgActivationKey"
+		parameterType="java.lang.Object">
+		<![CDATA[
+		update t_organization set activation_key =#{activationKey} ,expiration_date = date_add(now(), interval 7 day) where org_id=#{orgId} and flag>-1
+		]]>
+	</update>
+
+	<select id="getOrgByEmail"
+		parameterType="java.lang.Object"
+		resultType="com.anytrek.ts3.model.Organization">
+		<![CDATA[
+		select * from t_organization where email = #{email} and flag>-1  limit 1
+		]]>
+	</select>
+	
+	<update id="deleteOrg" parameterType="java.lang.Integer">
+		update t_organization set flag = -1 where org_id = #{orgId}
+	</update>
+	
+	
+	
+	
+	<!-- <update id="updateOrganizationByParams" parameterType="java.util.HashMap">
+	<![CDATA[update t_organization set  org_name=#{orgName} ,]]>
+	<trim prefix="" suffix="" prefixOverrides="," suffixOverrides="">
+			 <if test="streetAddress!=null" ><![CDATA[, street_address = #{streetAddress}]]></if>
+			 <if test="attribute!=null" ><![CDATA[, attribute = #{attribute}]]></if>
+			 <if test="contacts!=null" ><![CDATA[, contacts = #{contacts}]]></if> 
+			 <if test="email!=null" ><![CDATA[, email = #{email}]]></if> 
+			 <if test="phone!=null" ><![CDATA[, phone = #{phone}]]></if> 
+            </trim>
+           <![CDATA[ where org_id=#{orgId}]]>
+	</update> -->
+</mapper>
