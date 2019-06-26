@@ -49,8 +49,8 @@ spring:
    datasource:
       driverClassName:  com.mysql.jdbc.Driver
       url : jdbc:mysql://localhost:3306/location_v3_demo_db?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf-8
-      username : anytrek
-      password : anytrek123
+      username : sean
+      password : 12345
       initialSize: 5
       minIdle: 1
       connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
