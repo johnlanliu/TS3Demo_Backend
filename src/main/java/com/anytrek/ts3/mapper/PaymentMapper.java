@@ -5,10 +5,11 @@ import java.util.List;
 
 import com.anytrek.ts3.model.Payment;
 import com.anytrek.ts3.util.MyMapper;
+import com.anytrek.ts3.dto.PaymentDetailDto;
 
 /**
  * 
- * @author seanlam date 2019 M06 27
+ * @author seanlam date 06/27/2019
  *
  */
 
