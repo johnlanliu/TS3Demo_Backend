@@ -15,12 +15,5 @@ import com.anytrek.ts3.dto.PaymentDetailDto;
 
 public interface PaymentMapper extends MyMapper<Payment>{
 	
-	public List<PaymentDetailDto> getPaymentListByCustomer(HashMap <String, Object> params) throws Exception;
-	
-	public List<PaymentDetailDto> getPaymentListByStatus(HashMap <String, Object> params) throws Exception;
-	
-	public List<PaymentDetailDto> getPaymentListByInvoiceNo(HashMap <String, Object> params) throws Exception;
-	
-
 	
 }
