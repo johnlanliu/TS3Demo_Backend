@@ -22,6 +22,7 @@ import com.anytrek.ts3.model.User;
 import com.anytrek.util.PasswordUtil;
 import com.fasterxml.jackson.annotation.JsonView;
 
+import com.anytrek.ts3.ControllerBase;
 import com.anytrek.ts3.model.Payment;
 
 @RestController
