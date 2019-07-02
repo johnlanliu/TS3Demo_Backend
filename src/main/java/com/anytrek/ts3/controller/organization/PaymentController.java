@@ -50,6 +50,11 @@ public class PaymentController {
 	@JsonView(View.Summary.class)
 	@RequestMapping(value = { "/getPaymentList" }, method = RequestMethod.GET)
 	public HashMap<String, Object> getPaymentList(@RequestParam(value = "paymentId") Integer paymentId) {
-		User loginUser = getUserByHeader();
+		// User loginUser = getUserByHeader();
+		List<Payment> contents = paymentMapper.selectAll();
+		HashMap<String, Object> stuff = new HashMap<>();
+		stuff.put("list", contents);
+		return stuff;
+		
 	}
 }
