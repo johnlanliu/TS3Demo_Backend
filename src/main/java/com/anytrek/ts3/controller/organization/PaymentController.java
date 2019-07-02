@@ -31,7 +31,7 @@ import com.anytrek.ts3.model.Payment;
 
 @RestController
 @RequestMapping("/orgMPayment")
-public class PaymentController {
+public class PaymentController extends ControllerBase {
 
 	@SuppressWarnings("unused")
 	private static Logger logger = LogManager.getLogger(UserController.class);
@@ -42,6 +42,9 @@ public class PaymentController {
 	@JsonView(View.Summary.class)
 	@RequestMapping(value = { "/addPayment" }, method = RequestMethod.POST)
 	public String addPayment(@RequestBody(required = false) Payment requestPayment) throws Exception {
+		User loginUser = getUserByHeader();
+		String username = loginUser.getUsername();
+		requestPayment.setSales(username);
 		paymentMapper.insert(requestPayment);
 		logger.info("Insert Success!");
 		return "OK";
@@ -49,12 +52,12 @@ public class PaymentController {
 	
 	@JsonView(View.Summary.class)
 	@RequestMapping(value = { "/getPaymentList" }, method = RequestMethod.GET)
-	public HashMap<String, Object> getPaymentList(@RequestParam(value = "paymentId") Integer paymentId) {
+	public List<Payment> getPaymentList(@RequestParam(required = false) Integer paymentId) {
 		// User loginUser = getUserByHeader();
 		List<Payment> contents = paymentMapper.selectAll();
 		HashMap<String, Object> stuff = new HashMap<>();
 		stuff.put("list", contents);
-		return stuff;
+		return contents;
 		
 	}
 }
