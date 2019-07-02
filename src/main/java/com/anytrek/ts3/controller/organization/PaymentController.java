@@ -34,7 +34,7 @@ import com.anytrek.ts3.model.Payment;
 public class PaymentController extends ControllerBase {
 
 	@SuppressWarnings("unused")
-	private static Logger logger = LogManager.getLogger(UserController.class);
+	private static Logger logger = LogManager.getLogger(PaymentController.class);
 
 	@Autowired
 	private PaymentMapper paymentMapper;
@@ -52,9 +52,14 @@ public class PaymentController extends ControllerBase {
 	
 	@JsonView(View.Summary.class)
 	@RequestMapping(value = { "/getPaymentList" }, method = RequestMethod.GET)
-	public List<Payment> getPaymentList(@RequestParam(required = false) Integer paymentId) {
-		// User loginUser = getUserByHeader();
-		List<Payment> contents = paymentMapper.selectAll();
+	public List<Payment> getPaymentList(@RequestParam(value = "invoiceNo", required = false) Integer invoiceNo) throws Exception {
+		List<Payment> contents;
+		if (invoiceNo != null) {
+			contents = paymentMapper.getPaymentListByInvoiceNo(invoiceNo); //unique invoice numbers in future
+		}
+		else {
+			contents = paymentMapper.selectAll();
+		}
 		HashMap<String, Object> stuff = new HashMap<>();
 		stuff.put("list", contents);
 		return contents;
