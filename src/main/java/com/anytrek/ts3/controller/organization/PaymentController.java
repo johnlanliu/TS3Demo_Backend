@@ -2,6 +2,8 @@ package com.anytrek.ts3.controller.organization;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +26,7 @@ import com.anytrek.util.PasswordUtil;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import com.anytrek.ts3.ControllerBase;
+import com.anytrek.ts3.dto.PaymentDetailDto;
 import com.anytrek.ts3.model.Payment;
 
 @RestController
@@ -41,5 +45,11 @@ public class PaymentController {
 		paymentMapper.insert(requestPayment);
 		logger.info("Insert Success!");
 		return "OK";
+	}
+	
+	@JsonView(View.Summary.class)
+	@RequestMapping(value = { "/getPaymentList" }, method = RequestMethod.GET)
+	public HashMap<String, Object> getPaymentList(@RequestParam(value = "paymentId") Integer paymentId) {
+		User loginUser = getUserByHeader();
 	}
 }
