@@ -37,7 +37,6 @@ public class PaymentController {
 	@JsonView(View.Summary.class)
 	@RequestMapping(value = { "/addPayment" }, method = RequestMethod.POST)
 	public String addPayment(@RequestBody(required = false) Payment requestPayment) throws Exception {
-		
 		paymentMapper.insert(requestPayment);
 		logger.info("Insert Success!");
 		return "OK";
