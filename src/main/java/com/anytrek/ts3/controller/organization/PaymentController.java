@@ -52,16 +52,29 @@ public class PaymentController extends ControllerBase {
 	
 	@JsonView(View.Summary.class)
 	@RequestMapping(value = { "/getPaymentList" }, method = RequestMethod.GET)
-	public List<Payment> getPaymentList(@RequestParam(value = "invoiceNo", required = false) Integer invoiceNo) throws Exception {
-		List<Payment> contents;
+	public List<Payment> getPaymentList(@RequestParam(value = "invoiceNo", required = false) Integer invoiceNo,
+			@RequestParam(value = "status", required = false) String status, 
+			@RequestParam(value = "customer", required = false) String customer) throws Exception {
+		HashMap<String, Object> params = new HashMap<>();
+		List<Payment> contents = paymentMapper.selectAll();
+		int state = 0;
 		if (invoiceNo != null) {
-			contents = paymentMapper.getPaymentListByInvoiceNo(invoiceNo); //unique invoice numbers in future
+			params.put("invoiceNo", invoiceNo);
+			state = 1;
 		}
-		else {
-			contents = paymentMapper.selectAll();
+		if (status != null & !"".equals(status)) {
+			params.put("status", status);
+			state = 1;
 		}
-		HashMap<String, Object> stuff = new HashMap<>();
-		stuff.put("list", contents);
+		if (customer != null & !"".equals(customer)) {
+			params.put("customer", customer);
+			state = 1;
+		}
+		if (state == 1) {
+			contents = paymentMapper.getPaymentListByParams(params);
+		}
+//		HashMap<String, Object> stuff = new HashMap<>();
+//		stuff.put("list", contents);
 		return contents;
 		
 	}

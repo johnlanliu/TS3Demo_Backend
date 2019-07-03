@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.anytrek.ts3.mapper.PaymentMapper">
-	<select id="getPaymentListByInvoiceNo"
+	<!-- <select id="getPaymentListByInvoiceNo"
 		parameterType="java.lang.Integer"
 		resultType="com.anytrek.ts3.model.Payment">
 		<![CDATA[
@@ -21,6 +21,23 @@
 		<![CDATA[
 		select * from t_payment where status = #{status} 
 		]]>
+	</select> -->
+	<select id="getPaymentListByParams" 
+		parameterType="java.util.HashMap"
+		resultType="com.anytrek.ts3.model.Payment">
+		select * from t_payment
+		<trim prefix="where" suffix="" prefixOverrides="and"
+			suffixOverrides="">
+			<if test="invoiceNo!=null">
+				<![CDATA[and invoice_no = #{invoiceNo}]]>
+			</if>
+			<if test="customer!=null">
+				<![CDATA[and customer = #{customer}]]>
+			</if>
+			<if test="status!=null">
+				<![CDATA[and status = #{status}]]>
+			</if>
+		</trim>
 	</select>
 
 </mapper>
