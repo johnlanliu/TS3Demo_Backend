@@ -78,4 +78,12 @@ public class PaymentController extends ControllerBase {
 		return contents;
 		
 	}
+	
+	@JsonView(View.Summary.class)
+	@RequestMapping(value = {"/voidPayment"}, method = RequestMethod.POST)
+	public void voidPayment(@RequestParam(value = "invoiceNo", required = true) Integer invoiceNo) throws Exception {
+		Payment toVoid = paymentMapper.getPaymentToVoid(invoiceNo);
+		toVoid.setStatus("void");
+		paymentMapper.updateByPrimaryKey(toVoid);
+	}
 }
