@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.anytrek.ts3.model.Order;
+import com.anytrek.ts3.model.Payment;
 import com.anytrek.ts3.util.MyMapper;
 
 /**
@@ -13,5 +14,6 @@ import com.anytrek.ts3.util.MyMapper;
  */
 
 public interface OrderMapper extends MyMapper<Order> {
-
+	
+	public List<Order> getOrderListByParams(HashMap<String, Object> params) throws Exception;
 }

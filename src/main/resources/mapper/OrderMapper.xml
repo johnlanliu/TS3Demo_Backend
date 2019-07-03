@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.anytrek.ts3.mapper.OrderMapper">
-
-
-
+	<select id="getOrderListByParams" 
+		parameterType="java.util.HashMap"
+		resultType="com.anytrek.ts3.model.Order">
+		select * from t_order
+		<trim prefix="where" suffix="" prefixOverrides="and"
+			suffixOverrides="">
+			<if test="invoiceNo!=null">
+				<![CDATA[and invoice_no = #{invoiceNo}]]>
+			</if>
+			<if test="status!=null">
+				<![CDATA[and status = #{status}]]>
+			</if>
+		</trim>
+	</select>
 </mapper>

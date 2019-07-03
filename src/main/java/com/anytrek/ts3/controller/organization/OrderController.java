@@ -21,7 +21,6 @@ import com.anytrek.ts3.dto.View;
 import com.anytrek.ts3.exception.ErrorCode;
 import com.anytrek.ts3.exception.WebException;
 import com.anytrek.ts3.mapper.OrderMapper;
-import com.anytrek.ts3.mapper.PaymentMapper;
 import com.anytrek.ts3.model.User;
 import com.anytrek.util.PasswordUtil;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -52,13 +51,22 @@ public class OrderController extends ControllerBase {
 	
 	@JsonView(View.Summary.class)
 	@RequestMapping(value = { "/getOrderList" }, method = RequestMethod.GET)
-	public List<Order> getPaymentList(@RequestParam(value = "invoiceNo", required = false) Integer invoiceNo,
-			@RequestParam(value = "status", required = false) String status, 
-			@RequestParam(value = "customer", required = false) String customer) throws Exception {
+	public List<Order> getOrderList(@RequestParam(value = "invoiceNo", required = false) Integer invoiceNo,
+			@RequestParam(value = "status", required = false) String status) throws Exception {
 		HashMap<String, Object> params = new HashMap<>();
 		List<Order> contents = orderMapper.selectAll();
 		int state = 0;
-		
+		if (invoiceNo != null) {
+			params.put("invoiceNo", invoiceNo);
+			state = 1;
+		}
+		if (status != null & !"".equals(status)) {
+			params.put("status", status);
+			state = 1;
+		}
+		if (state == 1) {
+			contents = orderMapper.getOrderListByParams(params);
+		}
 //		HashMap<String, Object> stuff = new HashMap<>();
 //		stuff.put("list", contents);
 		return contents;
