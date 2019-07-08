@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.anytrek.ts3.model.Order;
-import com.anytrek.ts3.model.Payment;
 import com.anytrek.ts3.util.MyMapper;
 
 /**

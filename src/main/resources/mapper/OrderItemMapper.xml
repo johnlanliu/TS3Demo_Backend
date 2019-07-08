@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.anytrek.ts3.mapper.OrderItemMapper">
+	<select id="getOrderItemListByOrderId" 
+		parameterType="java.lang.Integer"
+		resultType="com.anytrek.ts3.model.OrderItem">
+		select * from t_order_item
+		<trim prefix="where" suffix="" prefixOverrides="and"
+			suffixOverrides="">
+			<if test="orderId!=null">
+				<![CDATA[and order_id = #{orderId}]]>
+			</if>
+		</trim>
+	</select>
+</mapper>
