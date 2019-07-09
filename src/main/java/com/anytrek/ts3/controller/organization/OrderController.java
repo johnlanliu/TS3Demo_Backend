@@ -61,14 +61,13 @@ public class OrderController extends ControllerBase {
 		User loginUser = getUserByHeader();
 		String username = loginUser.getUsername();
 		order.setSales(username);
-		Integer OID = orderMapper.insertOrder(order);
-		logger.info(OID);
+		orderMapper.insertOrder(order);
 		
 		List<OrderItem> items = new ArrayList<OrderItem>();
 		JSONArray itemArr = requestOrder.getJSONArray("orderItems");
 		for(int i=0; i<itemArr.size(); i++) {
 			OrderItem item = new OrderItem();
-			item.setOrderId(OID);
+			item.setOrderId(order.getOrderId());
 			item.setProduct(itemArr.getJSONObject(i).getString("product"));
 			item.setQuantity(itemArr.getJSONObject(i).getInteger("quantity"));
 			item.setRate(itemArr.getJSONObject(i).getFloat("rate"));
