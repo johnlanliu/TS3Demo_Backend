@@ -24,4 +24,6 @@ public interface PaymentMapper extends MyMapper<Payment>{
 	public List<Payment> getPaymentListByParams(HashMap<String, Object> params) throws Exception;
 	
 	public Payment getPaymentToVoid(Integer invoiceNo) throws Exception;
+	
+	public Payment getPaymentByInvoiceNo(Integer invoiceNo) throws Exception;
 }
