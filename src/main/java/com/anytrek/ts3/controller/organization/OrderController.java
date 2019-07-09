@@ -114,4 +114,12 @@ public class OrderController extends ControllerBase {
 		return contents;
 		
 	}
+	@JsonView(View.Summary.class)
+	@RequestMapping(value= {"/getOrderByOrderId"}, method = RequestMethod.GET)
+	public Order getOrderByOrderId(@RequestParam(value = "orderId", required = true) Integer orderId)
+			throws Exception {
+		Order result = new Order();
+		result = orderMapper.getOrderByOrderId(orderId);
+		return result;
+	}
 }
