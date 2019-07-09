@@ -68,10 +68,50 @@ public class Order implements java.io.Serializable {
 	@Column(name = "modify_time", nullable = true, length = 19)
 	private String modifyTime;
 	
+	@JsonView(View.Summary.class)
+	@Column(name = "billing_company", nullable = true, length = 100)
+	private String billingCompany;
+	
+	@JsonView(View.Summary.class)
+	@Column(name = "billing_contact", nullable = true, length = 19)
+	private String billingContact;
+	
+	@JsonView(View.Summary.class)
+	@Column(name = "billing_number", nullable = true, length = 19)
+	private String billingNumber;
+	
+	@JsonView(View.Summary.class)
+	@Column(name = "billing_email", nullable = true, length = 100)
+	private String billingEmail;
+	
+	@JsonView(View.Summary.class)
+	@Column(name = "billing_address", nullable = true, length = 100)
+	private String billingAddress;
+	
+	@JsonView(View.Summary.class)
+	@Column(name = "shipping_company", nullable = true, length = 100)
+	private String shippingCompany;
+	
+	@JsonView(View.Summary.class)
+	@Column(name = "shipping_contact", nullable = true, length = 19)
+	private String shippingContact;
+	
+	@JsonView(View.Summary.class)
+	@Column(name = "shipping_number", nullable = true, length = 19)
+	private String shippingNumber;
+	
+	@JsonView(View.Summary.class)
+	@Column(name = "shipping_email", nullable = true, length = 100)
+	private String shippingEmail;
+	
+	@JsonView(View.Summary.class)
+	@Column(name = "shipping_address", nullable = true, length = 100)
+	private String shippingAddress;
+
 	public Integer getOrderId() {
 		return orderId;
 	}
-
+	
 	public void setOrderId(Integer orderId) {
 		this.orderId = orderId;
 	}
@@ -155,5 +195,86 @@ public class Order implements java.io.Serializable {
 	public void setModifyTime(String modifyTime) {
 		this.modifyTime = modifyTime;
 	}
+	
+	public String getBillingCompany() {
+		return billingCompany;
+	}
+
+	public void setBillingCompany(String billingCompany) {
+		this.billingCompany = billingCompany;
+	}
+
+	public String getBillingContact() {
+		return billingContact;
+	}
+
+	public void setBillingContact(String billingContact) {
+		this.billingContact = billingContact;
+	}
+
+	public String getBillingNumber() {
+		return billingNumber;
+	}
+
+	public void setBillingNumber(String billingNumber) {
+		this.billingNumber = billingNumber;
+	}
+
+	public String getBillingEmail() {
+		return billingEmail;
+	}
+
+	public void setBillingEmail(String billingEmail) {
+		this.billingEmail = billingEmail;
+	}
+
+	public String getBillingAddress() {
+		return billingAddress;
+	}
+
+	public void setBillingAddress(String billingAddress) {
+		this.billingAddress = billingAddress;
+	}
+
+	public String getShippingCompany() {
+		return shippingCompany;
+	}
+
+	public void setShippingCompany(String shippingCompany) {
+		this.shippingCompany = shippingCompany;
+	}
+
+	public String getShippingContact() {
+		return shippingContact;
+	}
+
+	public void setShippingContact(String shippingContact) {
+		this.shippingContact = shippingContact;
+	}
+
+	public String getShippingNumber() {
+		return shippingNumber;
+	}
+
+	public void setShippingNumber(String shippingNumber) {
+		this.shippingNumber = shippingNumber;
+	}
+
+	public String getShippingEmail() {
+		return shippingEmail;
+	}
+
+	public void setShippingEmail(String shippingEmail) {
+		this.shippingEmail = shippingEmail;
+	}
+
+	public String getShippingAddress() {
+		return shippingAddress;
+	}
+
+	public void setShippingAddress(String shippingAddress) {
+		this.shippingAddress = shippingAddress;
+	}
+	
 
 }
