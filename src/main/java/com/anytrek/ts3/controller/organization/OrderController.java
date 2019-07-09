@@ -1,6 +1,7 @@
 package com.anytrek.ts3.controller.organization;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,13 +21,16 @@ import com.anytrek.ts3.common.FlagConstants;
 import com.anytrek.ts3.dto.View;
 import com.anytrek.ts3.exception.ErrorCode;
 import com.anytrek.ts3.exception.WebException;
+import com.anytrek.ts3.mapper.OrderItemMapper;
 import com.anytrek.ts3.mapper.OrderMapper;
 import com.anytrek.ts3.model.User;
 import com.anytrek.util.PasswordUtil;
 import com.fasterxml.jackson.annotation.JsonView;
-
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.anytrek.ts3.ControllerBase;
 import com.anytrek.ts3.model.Order;
+import com.anytrek.ts3.model.OrderItem;
 
 @RestController
 @RequestMapping("/orgMOrder")
@@ -38,13 +42,42 @@ public class OrderController extends ControllerBase {
 	@Autowired
 	private OrderMapper orderMapper;
 	
+	@Autowired
+	private OrderItemMapper orderItemMapper;
+	
 	@JsonView(View.Summary.class)
 	@RequestMapping(value = { "/addOrder" }, method = RequestMethod.POST)
-	public String addOrder(@RequestBody(required = false) Order requestOrder) throws Exception {
+	public String addOrder(@RequestBody(required = false) JSONObject requestOrder) throws Exception {
+		Order order = new Order();
+		order.setType(requestOrder.getString("type"));
+		order.setCustomer(requestOrder.getString("customer"));
+		order.setDescription(requestOrder.getString("description"));
+		order.setStatus(requestOrder.getString("status"));
+		order.setInvoiceNo(requestOrder.getInteger("invoiceNo"));
+		order.setInvoiceDate(requestOrder.getString("invoiceDate"));
+		order.setDueDate(requestOrder.getString("dueDate"));
+		order.setTrackingNo(requestOrder.getInteger("trackingNo"));
+		order.setCreateTime(new Timestamp(new Date().getTime()));
 		User loginUser = getUserByHeader();
 		String username = loginUser.getUsername();
-		requestOrder.setSales(username);
-		orderMapper.insert(requestOrder);
+		order.setSales(username);
+		Integer OID = orderMapper.insertOrder(order);
+		logger.info(OID);
+		
+		List<OrderItem> items = new ArrayList<OrderItem>();
+		JSONArray itemArr = requestOrder.getJSONArray("orderItems");
+		for(int i=0; i<itemArr.size(); i++) {
+			OrderItem item = new OrderItem();
+			item.setOrderId(OID);
+			item.setProduct(itemArr.getJSONObject(i).getString("product"));
+			item.setQuantity(itemArr.getJSONObject(i).getInteger("quantity"));
+			item.setRate(itemArr.getJSONObject(i).getFloat("rate"));
+			item.setAmount(itemArr.getJSONObject(i).getFloat("amount"));
+			item.setTax(itemArr.getJSONObject(i).getString("tax"));
+			items.add(item);
+		}
+		orderItemMapper.insertList(items);
+		
 		logger.info("Insert Success!");
 		return "OK";
 	}

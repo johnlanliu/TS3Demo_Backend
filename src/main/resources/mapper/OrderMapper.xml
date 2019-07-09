@@ -15,4 +15,17 @@
 			</if>
 		</trim>
 	</select>
+	<insert id="insertOrder" 
+		parameterType="com.anytrek.ts3.model.Order"
+		>
+		INSERT INTO t_order(type, customer, description, status, 
+		invoice_no, invoice_date, due_date, tracking_no, sales,
+		create_time) VALUES(#{type}, #{customer}, #{description}, 
+		#{status}, #{invoiceNo}, #{invoiceDate}, #{dueDate},
+		#{trackingNo}, #{sales}, #{createTime})
+		<selectKey resultType="Integer" order="AFTER" 
+			keyProperty="orderId">
+			SELECT LAST_INSERT_ID() as orderId
+			</selectKey>
+	</insert>
 </mapper>

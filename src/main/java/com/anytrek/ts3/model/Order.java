@@ -2,6 +2,9 @@ package com.anytrek.ts3.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
@@ -63,7 +66,7 @@ public class Order implements java.io.Serializable {
 	
 	@JsonView(View.Summary.class)
 	@Column(name = "create_time", nullable = true, length = 19)
-	private String createTime;
+	private Timestamp createTime;
 	
 	@JsonView(View.Summary.class)
 	@Column(name = "modify_time", nullable = true, length = 19)
@@ -149,11 +152,11 @@ public class Order implements java.io.Serializable {
 		this.sales = sales;
 	}
 
-	public String getCreateTime() {
+	public Timestamp getCreateTime() {
 		return createTime;
 	}
 
-	public void setCreateTime(String createTime) {
+	public void setCreateTime(Timestamp createTime) {
 		this.createTime = createTime;
 	}
 

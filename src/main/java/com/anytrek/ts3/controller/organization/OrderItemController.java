@@ -46,7 +46,7 @@ public class OrderItemController extends ControllerBase {
 	
 	@JsonView(View.Summary.class)
 	@RequestMapping(value = { "/getOrderItemList" }, method = RequestMethod.GET)
-	public List<OrderItem> getOrderItemList(@RequestParam(value = "orderId", required = false) Integer orderId) throws Exception {
+	public List<OrderItem> getOrderItemList(@RequestParam(value = "orderId", required = true) Integer orderId) throws Exception {
 		
 		List<OrderItem> contents = null;
 		

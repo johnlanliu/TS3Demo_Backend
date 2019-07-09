@@ -26,7 +26,7 @@ public class OrderItem implements java.io.Serializable {
 	private Integer itemId;
 	
 	@JsonView(View.Summary.class)
-	@Column(name = "order_id", nullable = true, length = 10)
+	@Column(name = "order_id", nullable = false, length = 10)
 	private Integer orderId;
 	
 	@JsonView(View.Summary.class)
@@ -47,7 +47,7 @@ public class OrderItem implements java.io.Serializable {
 	
 	@JsonView(View.Summary.class)
 	@Column(name = "tax", nullable = true, length = 10)
-	private Float tax;
+	private String tax;
 
 	public Integer getItemId() {
 		return itemId;
@@ -97,11 +97,11 @@ public class OrderItem implements java.io.Serializable {
 		this.amount = amount;
 	}
 
-	public Float getTax() {
+	public String getTax() {
 		return tax;
 	}
 
-	public void setTax(Float tax) {
+	public void setTax(String tax) {
 		this.tax = tax;
 	}
 }
