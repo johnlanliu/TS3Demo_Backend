@@ -57,6 +57,16 @@ public class OrderController extends ControllerBase {
 		order.setDueDate(requestOrder.getString("dueDate"));
 		order.setTrackingNo(requestOrder.getInteger("trackingNo"));
 		order.setCreateTime(new Timestamp(new Date().getTime()));
+		order.setBillingCompany(requestOrder.getString("billingCompany"));
+		order.setBillingContact(requestOrder.getString("billingContact"));
+		order.setBillingNumber(requestOrder.getString("billingNumber"));
+		order.setBillingEmail(requestOrder.getString("billingEmail"));
+		order.setBillingAddress(requestOrder.getString("billingAddress"));
+		order.setShippingCompany(requestOrder.getString("shippingCompany"));
+		order.setShippingContact(requestOrder.getString("shippingContact"));
+		order.setShippingNumber(requestOrder.getString("shippingNumber"));
+		order.setShippingEmail(requestOrder.getString("shippingEmail"));
+		order.setShippingAddress(requestOrder.getString("shippingAddress"));
 		User loginUser = getUserByHeader();
 		String username = loginUser.getUsername();
 		order.setSales(username);
@@ -72,6 +82,7 @@ public class OrderController extends ControllerBase {
 			item.setRate(itemArr.getJSONObject(i).getFloat("rate"));
 			item.setAmount(itemArr.getJSONObject(i).getFloat("amount"));
 			item.setTax(itemArr.getJSONObject(i).getString("tax"));
+			item.setDescription(itemArr.getJSONObject(i).getString("description"));
 			items.add(item);
 		}
 		orderItemMapper.insertList(items);

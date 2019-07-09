@@ -20,9 +20,14 @@
 		>
 		INSERT INTO t_order(type, customer, description, status, 
 		invoice_no, invoice_date, due_date, tracking_no, sales,
-		create_time) VALUES(#{type}, #{customer}, #{description}, 
+		create_time, billing_company, billing_contact, billing_number,
+		billing_email, billing_address, shipping_company, shipping_contact,
+		shipping_number, shipping_email, shipping_address)
+		 VALUES(#{type}, #{customer}, #{description}, 
 		#{status}, #{invoiceNo}, #{invoiceDate}, #{dueDate},
-		#{trackingNo}, #{sales}, #{createTime})
+		#{trackingNo}, #{sales}, #{createTime}, #{billingCompany}, #{billingContact},
+		#{billingNumber}, #{billingEmail}, #{billingAddress}, #{shippingCompany}, 
+		#{shippingContact},#{ shippingNumber}, #{shippingEmail}, #{shippingAddress})
 		<selectKey resultType="Integer" order="AFTER" 
 			keyProperty="orderId">
 			SELECT LAST_INSERT_ID() as orderId

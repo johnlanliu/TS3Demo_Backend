@@ -41,6 +41,10 @@ public class Order implements java.io.Serializable {
 	private String status;
 	
 	@JsonView(View.Summary.class)
+	@Column(name = "description", nullable = true, length = 100)
+	private String description;
+	
+	@JsonView(View.Summary.class)
 	@Column(name = "invoice_no", nullable = true, length = 10)
 	private Integer invoiceNo;
 	
@@ -274,6 +278,14 @@ public class Order implements java.io.Serializable {
 
 	public void setShippingAddress(String shippingAddress) {
 		this.shippingAddress = shippingAddress;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 
