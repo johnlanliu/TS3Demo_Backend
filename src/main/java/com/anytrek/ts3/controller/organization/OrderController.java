@@ -51,7 +51,6 @@ public class OrderController extends ControllerBase {
 		Order order = new Order();
 		order.setType(requestOrder.getString("type"));
 		order.setCustomer(requestOrder.getString("customer"));
-		order.setDescription(requestOrder.getString("description"));
 		order.setStatus(requestOrder.getString("status"));
 		order.setInvoiceNo(requestOrder.getInteger("invoiceNo"));
 		order.setInvoiceDate(requestOrder.getString("invoiceDate"));

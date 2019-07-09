@@ -48,6 +48,10 @@ public class OrderItem implements java.io.Serializable {
 	@JsonView(View.Summary.class)
 	@Column(name = "tax", nullable = true, length = 10)
 	private String tax;
+	
+	@JsonView(View.Summary.class)
+	@Column(name = "description", nullable = true, length = 255)
+	private String description;
 
 	public Integer getItemId() {
 		return itemId;
@@ -103,5 +107,13 @@ public class OrderItem implements java.io.Serializable {
 
 	public void setTax(String tax) {
 		this.tax = tax;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

@@ -1,7 +1,9 @@
 package com.anytrek.ts3.controller.organization;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -20,10 +22,14 @@ import com.anytrek.ts3.dto.View;
 import com.anytrek.ts3.exception.ErrorCode;
 import com.anytrek.ts3.exception.WebException;
 import com.anytrek.ts3.mapper.OrderItemMapper;
+import com.anytrek.ts3.mapper.OrderMapper;
+import com.anytrek.ts3.model.User;
 import com.anytrek.util.PasswordUtil;
 import com.fasterxml.jackson.annotation.JsonView;
-
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.anytrek.ts3.ControllerBase;
+import com.anytrek.ts3.model.Order;
 import com.anytrek.ts3.model.OrderItem;
 
 @RestController
@@ -37,24 +43,16 @@ public class OrderItemController extends ControllerBase {
 	private OrderItemMapper orderItemMapper;
 	
 	@JsonView(View.Summary.class)
-	@RequestMapping(value = { "/addOrderItem" }, method = RequestMethod.POST)
-	public String addOrderItem(@RequestBody(required = false) OrderItem requestOrderItem) throws Exception {
-		orderItemMapper.insert(requestOrderItem);
-		logger.info("Insert Success!");
-		return "OK";
-	}
-	
-	@JsonView(View.Summary.class)
 	@RequestMapping(value = { "/getOrderItemList" }, method = RequestMethod.GET)
 	public List<OrderItem> getOrderItemList(@RequestParam(value = "orderId", required = true) Integer orderId) throws Exception {
-		
 		List<OrderItem> contents = null;
 		
 		if (orderId != null) {
 			contents = orderItemMapper.getOrderItemListByOrderId(orderId);
 		}
-
+		
 		return contents;
 		
 	}
+
 }

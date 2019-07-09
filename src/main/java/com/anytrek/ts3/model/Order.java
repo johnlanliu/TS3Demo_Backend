@@ -37,10 +37,6 @@ public class Order implements java.io.Serializable {
 	private String customer;
 	
 	@JsonView(View.Summary.class)
-	@Column(name = "description", nullable = true, length = 255)
-	private String description;
-	
-	@JsonView(View.Summary.class)
 	@Column(name = "status", nullable = true, length = 7)
 	private String status;
 	
@@ -94,14 +90,6 @@ public class Order implements java.io.Serializable {
 
 	public void setCustomer(String customer) {
 		this.customer = customer;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public String getStatus() {
