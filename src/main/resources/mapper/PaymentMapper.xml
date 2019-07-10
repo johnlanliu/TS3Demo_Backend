@@ -8,11 +8,11 @@
 		select * from t_payment where invoice_no = #{invoiceNo} LIMIT 1 
 		]]>
 	</select> 
-	<!-- <select id="getPaymentListByCustomer"
-		parameterType="java.lang.String"
+	<select id="getPaymentByPaymentId"
+		parameterType="java.lang.Integer"
 		resultType="com.anytrek.ts3.model.Payment">
 		<![CDATA[
-		select * from t_payment where customer = #{customer} 
+		select * from t_payment where payment_id = #{paymentId}
 		]]>
 	</select>
 	<select id="getPaymentListByStatus"
@@ -21,7 +21,7 @@
 		<![CDATA[
 		select * from t_payment where status = #{status} 
 		]]>
-	</select> --> 
+	</select> 
 	<select id="getPaymentListByParams" 
 		parameterType="java.util.HashMap"
 		resultType="com.anytrek.ts3.model.Payment">
@@ -39,12 +39,12 @@
 			</if>
 		</trim>
 	</select>
-	<select id="getPaymentToVoid"
+	<!-- <select id="getPaymentToVoid"
 		parameterType="java.lang.Integer"
 		resultType="com.anytrek.ts3.model.Payment">
 		<![CDATA[
 		select * from t_payment where invoice_no = #{invoiceNo} 
 		]]>
-	</select>
+	</select> -->
 
 </mapper>

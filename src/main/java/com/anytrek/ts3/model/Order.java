@@ -58,7 +58,7 @@ public class Order implements java.io.Serializable {
 	
 	@JsonView(View.Summary.class)
 	@Column(name = "tracking_no", nullable = true, length = 20)
-	private Integer trackingNo;
+	private String trackingNo;
 	
 	@JsonView(View.Summary.class)
 	@Column(name = "sales", nullable = true, length = 100)
@@ -168,11 +168,11 @@ public class Order implements java.io.Serializable {
 		this.dueDate = dueDate;
 	}
 
-	public Integer getTrackingNo() {
+	public String getTrackingNo() {
 		return trackingNo;
 	}
 
-	public void setTrackingNo(Integer trackingNo) {
+	public void setTrackingNo(String trackingNo) {
 		this.trackingNo = trackingNo;
 	}
 

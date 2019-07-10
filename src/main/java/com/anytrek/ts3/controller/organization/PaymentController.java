@@ -44,6 +44,12 @@ public class PaymentController extends ControllerBase {
 	public String addPayment(@RequestBody(required = false) Payment requestPayment) throws Exception {
 		User loginUser = getUserByHeader();
 		String username = loginUser.getUsername();
+		String invDate = requestPayment.getInvoiceDate();
+		String dDate = requestPayment.getInvoiceDate();
+		String newInvoiceDate = invDate.replaceAll("[a-zA-Z]", " ");
+		String newDueDate = dDate.replaceAll("[a-zA-Z]", " ");
+		requestPayment.setInvoiceDate(newInvoiceDate.substring(0, newInvoiceDate.length() - 5));
+		requestPayment.setDueDate(newDueDate.substring(0, newDueDate.length() - 5));
 		requestPayment.setSales(username);
 		paymentMapper.insert(requestPayment);
 		logger.info("Insert Success!");
@@ -81,17 +87,25 @@ public class PaymentController extends ControllerBase {
 	
 	@JsonView(View.Summary.class)
 	@RequestMapping(value = {"/voidPayment"}, method = RequestMethod.POST)
-	public void voidPayment(@RequestParam(value = "invoiceNo", required = true) Integer invoiceNo) throws Exception {
-		Payment toVoid = paymentMapper.getPaymentToVoid(invoiceNo);
+	public void voidPayment(@RequestParam(value = "paymentId", required = true) Integer paymentId) throws Exception {
+		Payment toVoid = paymentMapper.getPaymentByPaymentId(paymentId);
 		toVoid.setStatus("void");
 		paymentMapper.updateByPrimaryKey(toVoid);
 	}
 	
 	@JsonView(View.Summary.class) 
 	@RequestMapping(value = {"/getPaymentbyInvoiceNo"}, method = RequestMethod.GET)
-	public Payment getPaymentByInvoiceId(@RequestParam(value = "invoiceNo", required = true) Integer invoiceNo)
+	public Payment getPaymentByInvoiceNo(@RequestParam(value = "invoiceNo", required = true) Integer invoiceNo)
 			throws Exception {
 		Payment p = paymentMapper.getPaymentByInvoiceNo(invoiceNo);
+		return p;
+	}
+	
+	@JsonView(View.Summary.class)
+	@RequestMapping(value = {"/getPaymentByPaymentId"}, method = RequestMethod.GET)
+	public Payment getPaymentByInvoiceId(@RequestParam(value = "paymentId", required = true) Integer PaymentId)
+			throws Exception {
+		Payment p = paymentMapper.getPaymentByPaymentId(PaymentId);
 		return p;
 	}
 	

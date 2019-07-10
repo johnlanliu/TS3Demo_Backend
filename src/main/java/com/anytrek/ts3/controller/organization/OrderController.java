@@ -53,9 +53,11 @@ public class OrderController extends ControllerBase {
 		order.setCustomer(requestOrder.getString("customer"));
 		order.setStatus(requestOrder.getString("status"));
 		order.setInvoiceNo(requestOrder.getInteger("invoiceNo"));
-		order.setInvoiceDate(requestOrder.getString("invoiceDate"));
-		order.setDueDate(requestOrder.getString("dueDate"));
-		order.setTrackingNo(requestOrder.getInteger("trackingNo"));
+		String inv = requestOrder.getString("invoiceDate").replaceAll("[a-zA-Z]", " ");
+		String due = requestOrder.getString("dueDate").replaceAll("[a-zA-Z]", " ");
+		order.setInvoiceDate(inv.substring(0, inv.length() - 5));
+		order.setDueDate(due);
+		order.setTrackingNo(requestOrder.getString("trackingNo"));
 		order.setCreateTime(new Timestamp(new Date().getTime()));
 		order.setBillingCompany(requestOrder.getString("billingCompany"));
 		order.setBillingContact(requestOrder.getString("billingContact"));
