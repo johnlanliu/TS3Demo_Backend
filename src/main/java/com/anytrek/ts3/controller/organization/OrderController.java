@@ -124,4 +124,16 @@ public class OrderController extends ControllerBase {
 		result = orderMapper.getOrderByOrderId(orderId);
 		return result;
 	}
+	
+	@JsonView(View.Summary.class)
+	@RequestMapping(value= {"/cancelOrder"}, method = RequestMethod.POST)
+	public void cancelOrder(@RequestParam(value = "orderId", required = true) Integer orderId) throws Exception {
+		
+		Order toCancel = orderMapper.getOrderByOrderId(orderId);
+		toCancel.setStatus("cancelled");
+		
+		orderMapper.updateByPrimaryKey(toCancel);
+		
+		logger.info("Cancel Success!");
+	}
 }
