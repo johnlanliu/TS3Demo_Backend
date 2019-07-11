@@ -39,5 +39,8 @@
 		<![CDATA[
 			select * from t_order where order_id = #{orderId} 
 		]]>
-		</select>
+	</select>
+	<select id="getLastOrder" resultType="com.anytrek.ts3.model.Order">
+		SELECT * FROM t_order ORDER BY order_id DESC LIMIT 1
+	</select>
 </mapper>

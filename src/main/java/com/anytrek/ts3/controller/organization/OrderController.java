@@ -136,4 +136,12 @@ public class OrderController extends ControllerBase {
 		
 		logger.info("Cancel Success!");
 	}
+	
+	@JsonView(View.Summary.class)
+	@RequestMapping(value = {"getLastOrderId"}, method = RequestMethod.GET)
+	public Integer getLastOrderId() throws Exception {
+		Order last = orderMapper.getLastOrder();
+		Integer lastId = last.getOrderId();
+		return lastId;
+	}
 }

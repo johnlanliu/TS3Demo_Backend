@@ -114,6 +114,10 @@ public class Payment implements java.io.Serializable {
 	@Column(name = "invoice_type", nullable = true, length = 19)
 	private String invoiceType;
 	
+	@JsonView(View.Summary.class)
+	@Column(name = "order_id", nullable = true, length = 19)
+	private Integer orderId;
+	
 	public Integer getPaymentId() {
 		return paymentId;
 	}
@@ -288,6 +292,14 @@ public class Payment implements java.io.Serializable {
 
 	public void setInvoiceType(String invoiceType) {
 		this.invoiceType = invoiceType;
+	}
+
+	public Integer getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(Integer orderId) {
+		this.orderId = orderId;
 	}
 	
 	
