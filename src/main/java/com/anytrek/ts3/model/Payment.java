@@ -118,6 +118,10 @@ public class Payment implements java.io.Serializable {
 	@Column(name = "order_id", nullable = true, length = 19)
 	private Integer orderId;
 	
+	@JsonView(View.Summary.class)
+	@Column(name = "shipping_fee", nullable = true, length = 19)
+	private Integer shippingFee;
+	
 	public Integer getPaymentId() {
 		return paymentId;
 	}
@@ -300,6 +304,14 @@ public class Payment implements java.io.Serializable {
 
 	public void setOrderId(Integer orderId) {
 		this.orderId = orderId;
+	}
+
+	public Integer getShippingFee() {
+		return shippingFee;
+	}
+
+	public void setShippingFee(Integer shippingFee) {
+		this.shippingFee = shippingFee;
 	}
 	
 	
