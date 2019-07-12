@@ -142,6 +142,7 @@ public class OrderController extends ControllerBase {
 	public Integer getLastOrderId() throws Exception {
 		Order last = orderMapper.getLastOrder();
 		Integer lastId = last.getOrderId();
+		logger.info(lastId);
 		return lastId;
 	}
 }
