@@ -45,11 +45,11 @@ public class PaymentController extends ControllerBase {
 		User loginUser = getUserByHeader();
 		String username = loginUser.getUsername();
 		String invDate = requestPayment.getInvoiceDate();
-		String dDate = requestPayment.getInvoiceDate();
+		String dDate = requestPayment.getDueDate();
 		String newInvoiceDate = invDate.replaceAll("[a-zA-Z]", " ");
 		String newDueDate = dDate.replaceAll("[a-zA-Z]", " ");
-		requestPayment.setInvoiceDate(newInvoiceDate.substring(0, newInvoiceDate.length() - 5));
-		requestPayment.setDueDate(newDueDate.substring(0, newDueDate.length() - 5));
+		requestPayment.setInvoiceDate(newInvoiceDate);
+		requestPayment.setDueDate(newDueDate);
 		requestPayment.setSales(username);
 		paymentMapper.insert(requestPayment);
 		logger.info("Insert Success!");
