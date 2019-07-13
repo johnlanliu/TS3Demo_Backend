@@ -90,6 +90,8 @@ public class PaymentController extends ControllerBase {
 	public void voidPayment(@RequestParam(value = "paymentId", required = true) Integer paymentId) throws Exception {
 		Payment toVoid = paymentMapper.getPaymentByPaymentId(paymentId);
 		toVoid.setStatus("void");
+		Float zero = 0f;
+		toVoid.setAmount(zero);
 		paymentMapper.updateByPrimaryKey(toVoid);
 	}
 	
