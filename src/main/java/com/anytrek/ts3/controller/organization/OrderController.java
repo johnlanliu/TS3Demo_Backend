@@ -85,6 +85,7 @@ public class OrderController extends ControllerBase {
 			item.setAmount(itemArr.getJSONObject(i).getFloat("amount"));
 			item.setTax(itemArr.getJSONObject(i).getString("tax"));
 			item.setDescription(itemArr.getJSONObject(i).getString("description"));
+			item.setInvoiceNo(order.getInvoiceNo());
 			items.add(item);
 		}
 		orderItemMapper.insertList(items);
@@ -137,6 +138,7 @@ public class OrderController extends ControllerBase {
 		logger.info("Cancel Success!");
 	}
 	
+	// does not work
 	@JsonView(View.Summary.class)
 	@RequestMapping(value = {"/getLastOrderId"}, method = RequestMethod.GET)
 	public Integer getLastOrderId() throws Exception {
