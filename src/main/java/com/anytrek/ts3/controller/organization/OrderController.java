@@ -179,8 +179,9 @@ public class OrderController extends ControllerBase {
 		String username = loginUser.getUsername();
 		toEdit.setSales(username);
 		
+		orderMapper.updateByPrimaryKey(toEdit);
+		
 		List<OrderItem> toEditItems = new ArrayList<OrderItem>();
-		toEditItems = orderItemMapper.getOrderItemListByOrderId(orderId);
 		JSONArray itemArr = editedOrder.getJSONArray("orderItems");
 		for(int i=0; i<itemArr.size(); i++) {
 			OrderItem item = new OrderItem();
@@ -191,7 +192,11 @@ public class OrderController extends ControllerBase {
 			item.setAmount(itemArr.getJSONObject(i).getFloat("amount"));
 			item.setTax(itemArr.getJSONObject(i).getString("tax"));
 			item.setDescription(itemArr.getJSONObject(i).getString("description"));
+			item.setInvoiceNo(toEdit.getInvoiceNo());
 			toEditItems.add(item);
 		}
+		orderItemMapper.insertList(toEditItems);
+		
+		logger.info("Edit Success!");
 	}
 }

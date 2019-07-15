@@ -16,4 +16,6 @@ public interface OrderItemMapper extends MyMapper<OrderItem> {
 	public List<OrderItem> getOrderItemListByOrderId(Integer orderId) throws Exception;
 	
 	public List<OrderItem> getOrderItemListByInvoiceNo(Integer invoiceNo) throws Exception;
+
+	public void deleteItem(Integer itemId) throws Exception;
 }

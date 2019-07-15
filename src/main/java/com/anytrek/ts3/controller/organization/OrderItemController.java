@@ -21,6 +21,7 @@ import com.anytrek.ts3.common.FlagConstants;
 import com.anytrek.ts3.dto.View;
 import com.anytrek.ts3.exception.ErrorCode;
 import com.anytrek.ts3.exception.WebException;
+import com.anytrek.ts3.mapper.OrderMapper;
 import com.anytrek.ts3.mapper.OrderItemMapper;
 import com.anytrek.ts3.model.User;
 import com.anytrek.util.PasswordUtil;
@@ -65,5 +66,9 @@ public class OrderItemController extends ControllerBase {
 		return contents;
 	}
 	
-
+	@RequestMapping(value = {"/deleteOrderItem"}, method = RequestMethod.POST)
+	public void deleteOrderItem(@RequestParam(value = "itemId", required = true) Integer itemId) throws Exception {
+		orderItemMapper.deleteItem(itemId);
+		logger.info("Delete Success!");
+	}
 }
