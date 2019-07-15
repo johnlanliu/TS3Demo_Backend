@@ -52,6 +52,10 @@ public class OrderItem implements java.io.Serializable {
 	@JsonView(View.Summary.class)
 	@Column(name = "description", nullable = true, length = 255)
 	private String description;
+	
+	@JsonView(View.Summary.class)
+	@Column(name = "invoice_no", nullable = true, length = 255)
+	private Integer invoiceNo;
 
 	public Integer getItemId() {
 		return itemId;
@@ -115,5 +119,13 @@ public class OrderItem implements java.io.Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Integer getInvoiceNo() {
+		return invoiceNo;
+	}
+
+	public void setInvoiceNo(Integer invoiceNo) {
+		this.invoiceNo = invoiceNo;
 	}
 }

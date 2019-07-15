@@ -15,4 +15,11 @@
 			</if>
 		</trim> -->
 	</select>
+	<select id="getOrderItemListByInvoiceNo" 
+		parameterType="java.lang.Integer"
+		resultType="com.anytrek.ts3.model.OrderItem">
+		<![CDATA[
+		select * from t_order_item where invoice_no = #{invoiceNo} 
+		]]>
+	</select>
 </mapper>

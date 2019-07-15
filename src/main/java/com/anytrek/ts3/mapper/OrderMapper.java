@@ -20,5 +20,6 @@ public interface OrderMapper extends MyMapper<Order> {
 	
 	public Order getOrderByOrderId(Integer orderId) throws Exception;
 	
+	// does not work
 	public Order getLastOrder() throws Exception;
 }

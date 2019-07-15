@@ -43,7 +43,7 @@ public class OrderItemController extends ControllerBase {
 	@JsonView(View.Summary.class)
 	@RequestMapping(value = { "/getOrderItemList" }, method = RequestMethod.GET)
 	public List<OrderItem> getOrderItemList(@RequestParam(value = "orderId", required = true) Integer orderId) throws Exception {
-		List<OrderItem> contents = null;
+		List<OrderItem> contents = new ArrayList<>();
 		
 		if (orderId != null) {
 			contents = orderItemMapper.getOrderItemListByOrderId(orderId);
@@ -52,5 +52,18 @@ public class OrderItemController extends ControllerBase {
 		return contents;
 		
 	}
+	
+	@JsonView(View.Summary.class)
+	@RequestMapping(value = {"/getOrderItemListByInvoiceNo"}, method = RequestMethod.GET)
+	public List<OrderItem> getOrderItemListByInvoiceNo(@RequestParam(value = "invoiceNo", required = true) Integer invoiceNo)
+		throws Exception {
+		List<OrderItem> contents = new ArrayList<>();
+		
+		if(invoiceNo != null) {
+			contents = orderItemMapper.getOrderItemListByInvoiceNo(invoiceNo);
+		}
+		return contents;
+	}
+	
 
 }
