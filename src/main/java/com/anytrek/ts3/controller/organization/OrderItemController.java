@@ -50,7 +50,12 @@ public class OrderItemController extends ControllerBase {
 		}
 		
 		return contents;
-		
 	}
-
+	
+	@JsonView(View.Summary.class)
+	@RequestMapping(value = {"/deleteOrderItem"}, method = RequestMethod.POST)
+	public void deleteOrderItem(@RequestParam(value = "itemId", required = true) Integer itemId) throws Exception {
+		orderItemMapper.deleteItem(itemId);
+		logger.info("Delete Success!");
+	}
 }

@@ -128,12 +128,10 @@ public class OrderController extends ControllerBase {
 	@JsonView(View.Summary.class)
 	@RequestMapping(value= {"/cancelOrder"}, method = RequestMethod.POST)
 	public void cancelOrder(@RequestParam(value = "orderId", required = true) Integer orderId) throws Exception {
-		
 		Order toCancel = orderMapper.getOrderByOrderId(orderId);
 		toCancel.setStatus("cancelled");
 		
 		orderMapper.updateByPrimaryKey(toCancel);
-		
 		logger.info("Cancel Success!");
 	}
 	
@@ -145,7 +143,7 @@ public class OrderController extends ControllerBase {
 		logger.info(lastId);
 		return lastId;
 	}
-	
+
 	@JsonView(View.Summary.class)
 	@RequestMapping(value = {"/editOrder"}, method = RequestMethod.POST)
 	public void editOrder(@RequestParam(value = "orderId", required = true) Integer orderId, 
@@ -177,8 +175,9 @@ public class OrderController extends ControllerBase {
 		String username = loginUser.getUsername();
 		toEdit.setSales(username);
 		
+		orderMapper.updateByPrimaryKey(toEdit);
+		
 		List<OrderItem> toEditItems = new ArrayList<OrderItem>();
-		toEditItems = orderItemMapper.getOrderItemListByOrderId(orderId);
 		JSONArray itemArr = editedOrder.getJSONArray("orderItems");
 		for(int i=0; i<itemArr.size(); i++) {
 			OrderItem item = new OrderItem();
@@ -191,5 +190,8 @@ public class OrderController extends ControllerBase {
 			item.setDescription(itemArr.getJSONObject(i).getString("description"));
 			toEditItems.add(item);
 		}
+		orderItemMapper.insertList(toEditItems);
+		
+		logger.info("Edit Success!");
 	}
 }

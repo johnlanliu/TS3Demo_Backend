@@ -15,4 +15,8 @@
 			</if>
 		</trim> -->
 	</select>
+	
+	<update id="deleteItem" parameterType="java.lang.Integer">
+		<![CDATA[update t_order_item set flag = -1 where item_id = #{itemId}]]>
+	</update>
 </mapper>

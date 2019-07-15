@@ -14,4 +14,6 @@ import com.anytrek.ts3.util.MyMapper;
 public interface OrderItemMapper extends MyMapper<OrderItem> {
 	
 	public List<OrderItem> getOrderItemListByOrderId(Integer orderId) throws Exception;
+	
+	public void deleteItem(Integer itemId) throws Exception;
 }
