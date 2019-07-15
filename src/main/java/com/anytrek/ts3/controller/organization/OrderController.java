@@ -138,11 +138,58 @@ public class OrderController extends ControllerBase {
 	}
 	
 	@JsonView(View.Summary.class)
-	@RequestMapping(value = {"getLastOrderId"}, method = RequestMethod.GET)
+	@RequestMapping(value = {"/getLastOrderId"}, method = RequestMethod.GET)
 	public Integer getLastOrderId() throws Exception {
 		Order last = orderMapper.getLastOrder();
 		Integer lastId = last.getOrderId();
 		logger.info(lastId);
 		return lastId;
+	}
+	
+	@JsonView(View.Summary.class)
+	@RequestMapping(value = {"/editOrder"}, method = RequestMethod.POST)
+	public void editOrder(@RequestParam(value = "orderId", required = true) Integer orderId, 
+			@RequestBody(required = false) JSONObject editedOrder) throws Exception {
+		Order toEdit = new Order();
+		toEdit = orderMapper.getOrderByOrderId(orderId);
+		
+		toEdit.setType(editedOrder.getString("type"));
+		toEdit.setCustomer(editedOrder.getString("customer"));
+		toEdit.setStatus(editedOrder.getString("status"));
+		toEdit.setInvoiceNo(editedOrder.getInteger("invoiceNo"));
+		String inv = editedOrder.getString("invoiceDate").replaceAll("[a-zA-Z]", " ");
+		String due = editedOrder.getString("dueDate").replaceAll("[a-zA-Z]", " ");
+		toEdit.setInvoiceDate(inv);
+		toEdit.setDueDate(due);
+		toEdit.setTrackingNo(editedOrder.getString("trackingNo"));
+		toEdit.setCreateTime(new Timestamp(new Date().getTime()));
+		toEdit.setBillingCompany(editedOrder.getString("billingCompany"));
+		toEdit.setBillingContact(editedOrder.getString("billingContact"));
+		toEdit.setBillingNumber(editedOrder.getString("billingNumber"));
+		toEdit.setBillingEmail(editedOrder.getString("billingEmail"));
+		toEdit.setBillingAddress(editedOrder.getString("billingAddress"));
+		toEdit.setShippingCompany(editedOrder.getString("shippingCompany"));
+		toEdit.setShippingContact(editedOrder.getString("shippingContact"));
+		toEdit.setShippingNumber(editedOrder.getString("shippingNumber"));
+		toEdit.setShippingEmail(editedOrder.getString("shippingEmail"));
+		toEdit.setShippingAddress(editedOrder.getString("shippingAddress"));
+		User loginUser = getUserByHeader();
+		String username = loginUser.getUsername();
+		toEdit.setSales(username);
+		
+		List<OrderItem> toEditItems = new ArrayList<OrderItem>();
+		toEditItems = orderItemMapper.getOrderItemListByOrderId(orderId);
+		JSONArray itemArr = editedOrder.getJSONArray("orderItems");
+		for(int i=0; i<itemArr.size(); i++) {
+			OrderItem item = new OrderItem();
+			item.setOrderId(toEdit.getOrderId());
+			item.setProduct(itemArr.getJSONObject(i).getString("product"));
+			item.setQuantity(itemArr.getJSONObject(i).getInteger("quantity"));
+			item.setRate(itemArr.getJSONObject(i).getFloat("rate"));
+			item.setAmount(itemArr.getJSONObject(i).getFloat("amount"));
+			item.setTax(itemArr.getJSONObject(i).getString("tax"));
+			item.setDescription(itemArr.getJSONObject(i).getString("description"));
+			toEditItems.add(item);
+		}
 	}
 }
