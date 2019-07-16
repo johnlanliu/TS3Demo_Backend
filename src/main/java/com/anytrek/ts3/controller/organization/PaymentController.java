@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -109,6 +110,39 @@ public class PaymentController extends ControllerBase {
 			throws Exception {
 		Payment p = paymentMapper.getPaymentByPaymentId(PaymentId);
 		return p;
+	}
+	
+	@JsonView(View.Summary.class)
+	@RequestMapping(value = {"/editPayment"}, method = RequestMethod.POST)
+	public Payment editPayment(@RequestBody(required = true) Payment editPayment) throws Exception {
+		Payment curPayment = paymentMapper.selectByPrimaryKey(editPayment.getPaymentId());
+		if (curPayment == null) {
+			throw new WebException(ErrorCode.USER_NOT_FOUND);
+		}	
+		curPayment.setAmount(editPayment.getAmount());
+		curPayment.setInvoiceNo(editPayment.getInvoiceNo());
+		curPayment.setCustomer(editPayment.getCustomer());
+		curPayment.setInvoiceDate(editPayment.getInvoiceDate());
+		curPayment.setDueDate(editPayment.getDueDate());
+		curPayment.setStatus(editPayment.getStatus());
+		curPayment.setSales(editPayment.getSales());
+		curPayment.setBillingCompany(editPayment.getBillingCompany());
+		curPayment.setBillingContact(editPayment.getBillingContact());
+		curPayment.setBillingNumber(editPayment.getBillingNumber());
+		curPayment.setBillingEmail(editPayment.getBillingEmail());
+		curPayment.setBillingAddress(editPayment.getBillingAddress());
+		curPayment.setShippingCompany(editPayment.getShippingCompany());
+		curPayment.setShippingContact(editPayment.getShippingContact());
+		curPayment.setShippingNumber(editPayment.getShippingNumber());
+		curPayment.setShippingEmail(editPayment.getShippingEmail());
+		curPayment.setShippingAddress(editPayment.getShippingAddress());
+		curPayment.setNote(editPayment.getNote());
+		curPayment.setShippingVia(editPayment.getShippingVia());
+		curPayment.setPaymentTerm(editPayment.getPaymentTerm());
+		curPayment.setInvoiceType(editPayment.getInvoiceType());
+		paymentMapper.updateByPrimaryKeySelective(curPayment);
+		return curPayment;
+		
 	}
 	
 }
