@@ -69,6 +69,11 @@ public class OrderController extends ControllerBase {
 		order.setShippingNumber(requestOrder.getString("shippingNumber"));
 		order.setShippingEmail(requestOrder.getString("shippingEmail"));
 		order.setShippingAddress(requestOrder.getString("shippingAddress"));
+		order.setNote(requestOrder.getString("note"));
+		order.setShippingVia(requestOrder.getString("shippingVia"));
+		order.setShippingFee(requestOrder.getFloat("shippingFee"));
+		order.setSameAsBilling(requestOrder.getInteger("sameAsBilling"));
+		order.setPaymentTerm(requestOrder.getString("paymentTerm"));
 		User loginUser = getUserByHeader();
 		String username = loginUser.getUsername();
 		order.setSales(username);
@@ -175,6 +180,11 @@ public class OrderController extends ControllerBase {
 		toEdit.setShippingNumber(editedOrder.getString("shippingNumber"));
 		toEdit.setShippingEmail(editedOrder.getString("shippingEmail"));
 		toEdit.setShippingAddress(editedOrder.getString("shippingAddress"));
+		toEdit.setNote(editedOrder.getString("note"));
+		toEdit.setShippingVia(editedOrder.getString("shippingVia"));
+		toEdit.setShippingFee(editedOrder.getFloat("shippingFee"));
+		toEdit.setSameAsBilling(editedOrder.getInteger("sameAsBilling"));
+		toEdit.setPaymentTerm(editedOrder.getString("paymentTerm"));
 		User loginUser = getUserByHeader();
 		String username = loginUser.getUsername();
 		toEdit.setSales(username);

@@ -111,6 +111,26 @@ public class Order implements java.io.Serializable {
 	@JsonView(View.Summary.class)
 	@Column(name = "shipping_address", nullable = true, length = 100)
 	private String shippingAddress;
+	
+	@JsonView(View.Summary.class)
+	@Column(name = "note", nullable = true, length = 100)
+	private String note;
+	
+	@JsonView(View.Summary.class)
+	@Column(name = "shipping_via", nullable = true, length = 100)
+	private String shippingVia;
+	
+	@JsonView(View.Summary.class)
+	@Column(name = "shipping_fee", nullable = true, length = 100)
+	private Float shippingFee;
+	
+	@JsonView(View.Summary.class)
+	@Column(name = "same_as_billing", nullable = true, length = 100)
+	private Integer sameAsBilling;
+
+	@JsonView(View.Summary.class)
+	@Column(name = "payment_term", nullable = true, length = 100)
+	private String paymentTerm;
 
 	public Integer getOrderId() {
 		return orderId;
@@ -286,6 +306,46 @@ public class Order implements java.io.Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
+
+	public String getShippingVia() {
+		return shippingVia;
+	}
+
+	public void setShippingVia(String shippingVia) {
+		this.shippingVia = shippingVia;
+	}
+
+	public Float getShippingFee() {
+		return shippingFee;
+	}
+
+	public void setShippingFee(Float shippingFee) {
+		this.shippingFee = shippingFee;
+	}
+
+	public Integer getSameAsBilling() {
+		return sameAsBilling;
+	}
+
+	public void setSameAsBilling(Integer sameAsBilling) {
+		this.sameAsBilling = sameAsBilling;
+	}
+
+	public String getPaymentTerm() {
+		return paymentTerm;
+	}
+
+	public void setPaymentTerm(String paymentTerm) {
+		this.paymentTerm = paymentTerm;
 	}
 	
 

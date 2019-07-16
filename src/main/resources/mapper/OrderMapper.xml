@@ -22,12 +22,14 @@
 		invoice_no, invoice_date, due_date, tracking_no, sales,
 		create_time, billing_company, billing_contact, billing_number,
 		billing_email, billing_address, shipping_company, shipping_contact,
-		shipping_number, shipping_email, shipping_address)
+		shipping_number, shipping_email, shipping_address, note, shipping_via, 
+		shipping_fee, same_as_billing, payment_term)
 		 VALUES(#{type}, #{customer}, #{description}, 
 		#{status}, #{invoiceNo}, #{invoiceDate}, #{dueDate},
 		#{trackingNo}, #{sales}, #{createTime}, #{billingCompany}, #{billingContact},
 		#{billingNumber}, #{billingEmail}, #{billingAddress}, #{shippingCompany}, 
-		#{shippingContact},#{ shippingNumber}, #{shippingEmail}, #{shippingAddress})
+		#{shippingContact}, #{shippingNumber}, #{shippingEmail}, #{shippingAddress},
+		#{note}, #{shippingVia}, #{shippingFee}, #{sameAsBilling}, #{paymentTerm})
 		<selectKey resultType="Integer" order="AFTER" 
 			keyProperty="orderId">
 			SELECT LAST_INSERT_ID() as orderId
