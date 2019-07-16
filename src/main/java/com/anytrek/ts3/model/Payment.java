@@ -116,7 +116,11 @@ public class Payment implements java.io.Serializable {
 	
 	@JsonView(View.Summary.class)
 	@Column(name = "shipping_fee", nullable = true, length = 19)
-	private Integer shippingFee;
+	private Float shippingFee;
+	
+	@JsonView(View.Summary.class)
+	@Column(name = "tracking_no", nullable = true, length = 19)
+	private String trackingNo;
 	
 	public Integer getPaymentId() {
 		return paymentId;
@@ -294,12 +298,20 @@ public class Payment implements java.io.Serializable {
 		this.invoiceType = invoiceType;
 	}
 
-	public Integer getShippingFee() {
+	public Float getShippingFee() {
 		return shippingFee;
 	}
 
-	public void setShippingFee(Integer shippingFee) {
+	public void setShippingFee(Float shippingFee) {
 		this.shippingFee = shippingFee;
+	}
+
+	public String getTrackingNo() {
+		return trackingNo;
+	}
+
+	public void setTrackingNo(String trackingNo) {
+		this.trackingNo = trackingNo;
 	}
 	
 	

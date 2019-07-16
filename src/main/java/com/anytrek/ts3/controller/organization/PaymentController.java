@@ -42,7 +42,7 @@ public class PaymentController extends ControllerBase {
 	
 	@JsonView(View.Summary.class)
 	@RequestMapping(value = { "/addPayment" }, method = RequestMethod.POST)
-	public String addPayment(@RequestBody(required = false) Payment requestPayment) throws Exception {
+	public Payment addPayment(@RequestBody(required = false) Payment requestPayment) throws Exception {
 		User loginUser = getUserByHeader();
 		String username = loginUser.getUsername();
 		String invDate = requestPayment.getInvoiceDate();
@@ -54,7 +54,7 @@ public class PaymentController extends ControllerBase {
 		requestPayment.setSales(username);
 		paymentMapper.insert(requestPayment);
 		logger.info("Insert Success!");
-		return "OK";
+		return requestPayment;
 	}
 	
 	@JsonView(View.Summary.class)
@@ -92,6 +92,7 @@ public class PaymentController extends ControllerBase {
 		Payment toVoid = paymentMapper.getPaymentByPaymentId(paymentId);
 		toVoid.setStatus("void");
 		Float zero = 0f;
+		toVoid.setShippingFee(zero);
 		toVoid.setAmount(zero);
 		paymentMapper.updateByPrimaryKey(toVoid);
 	}
@@ -140,6 +141,8 @@ public class PaymentController extends ControllerBase {
 		curPayment.setShippingVia(editPayment.getShippingVia());
 		curPayment.setPaymentTerm(editPayment.getPaymentTerm());
 		curPayment.setInvoiceType(editPayment.getInvoiceType());
+		curPayment.setShippingFee(editPayment.getShippingFee());
+		curPayment.setTrackingNo(editPayment.getTrackingNo());
 		paymentMapper.updateByPrimaryKeySelective(curPayment);
 		return curPayment;
 		
