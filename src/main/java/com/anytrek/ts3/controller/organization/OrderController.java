@@ -78,10 +78,15 @@ public class OrderController extends ControllerBase {
 		User loginUser = getUserByHeader();
 		String username = loginUser.getUsername();
 		order.setSales(username);
+		JSONArray itemArr = requestOrder.getJSONArray("orderItems");
+		String descs = "";
+		for(int i = 0; i < itemArr.size(); i++) {
+			descs = descs + itemArr.getJSONObject(i).getString("description") + ", ";
+		}
+		order.setDescription(descs);
 		orderMapper.insertOrder(order);
 		
 		List<OrderItem> items = new ArrayList<OrderItem>();
-		JSONArray itemArr = requestOrder.getJSONArray("orderItems");
 		for(int i=0; i<itemArr.size(); i++) {
 			OrderItem item = new OrderItem();
 			item.setOrderId(order.getOrderId());
@@ -93,8 +98,9 @@ public class OrderController extends ControllerBase {
 			item.setDescription(itemArr.getJSONObject(i).getString("description"));
 			item.setInvoiceNo(order.getInvoiceNo());
 			items.add(item);
-		}
+		}		
 		orderItemMapper.insertList(items);
+
 		
 		logger.info("Insert Success!");
 		return "OK";
