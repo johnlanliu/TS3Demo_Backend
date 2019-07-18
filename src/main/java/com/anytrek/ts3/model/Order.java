@@ -70,7 +70,7 @@ public class Order implements java.io.Serializable {
 	
 	@JsonView(View.Summary.class)
 	@Column(name = "modify_time", nullable = true, length = 19)
-	private String modifyTime;
+	private Timestamp modifyTime;
 	
 	@JsonView(View.Summary.class)
 	@Column(name = "billing_company", nullable = true, length = 100)
@@ -212,11 +212,11 @@ public class Order implements java.io.Serializable {
 		this.createTime = createTime;
 	}
 
-	public String getModifyTime() {
+	public Timestamp getModifyTime() {
 		return modifyTime;
 	}
 
-	public void setModifyTime(String modifyTime) {
+	public void setModifyTime(Timestamp modifyTime) {
 		this.modifyTime = modifyTime;
 	}
 	

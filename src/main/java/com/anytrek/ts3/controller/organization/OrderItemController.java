@@ -68,7 +68,7 @@ public class OrderItemController extends ControllerBase {
 	
 	@RequestMapping(value = {"/deleteOrderItem"}, method = RequestMethod.POST)
 	public void deleteOrderItem(@RequestParam(value = "itemId", required = true) Integer itemId) throws Exception {
-		orderItemMapper.deleteItem(itemId);
+		orderItemMapper.deleteByPrimaryKey(itemId);
 		logger.info("Delete Success!");
 	}
 }

@@ -31,6 +31,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.anytrek.ts3.ControllerBase;
 import com.anytrek.ts3.model.Order;
 import com.anytrek.ts3.model.OrderItem;
+import com.anytrek.ts3.model.Payment;
 
 @RestController
 @RequestMapping("/orgMOrder")
@@ -155,10 +156,8 @@ public class OrderController extends ControllerBase {
 	
 	@JsonView(View.Summary.class)
 	@RequestMapping(value = {"/editOrder"}, method = RequestMethod.POST)
-	public void editOrder(@RequestParam(value = "orderId", required = true) Integer orderId, 
-			@RequestBody(required = false) JSONObject editedOrder) throws Exception {
-		Order toEdit = new Order();
-		toEdit = orderMapper.getOrderByOrderId(orderId);
+	public void editOrder(@RequestBody(required = false) JSONObject editedOrder) throws Exception {
+		Order toEdit = orderMapper.selectByPrimaryKey(editedOrder.getInteger("orderId"));
 		
 		toEdit.setType(editedOrder.getString("type"));
 		toEdit.setCustomer(editedOrder.getString("customer"));
@@ -169,7 +168,7 @@ public class OrderController extends ControllerBase {
 		toEdit.setInvoiceDate(inv);
 		toEdit.setDueDate(due);
 		toEdit.setTrackingNo(editedOrder.getString("trackingNo"));
-		toEdit.setCreateTime(new Timestamp(new Date().getTime()));
+		toEdit.setModifyTime(new Timestamp(new Date().getTime()));
 		toEdit.setBillingCompany(editedOrder.getString("billingCompany"));
 		toEdit.setBillingContact(editedOrder.getString("billingContact"));
 		toEdit.setBillingNumber(editedOrder.getString("billingNumber"));
@@ -193,19 +192,21 @@ public class OrderController extends ControllerBase {
 		
 		List<OrderItem> toEditItems = new ArrayList<OrderItem>();
 		JSONArray itemArr = editedOrder.getJSONArray("orderItems");
-		for(int i=0; i<itemArr.size(); i++) {
-			OrderItem item = new OrderItem();
-			item.setOrderId(toEdit.getOrderId());
-			item.setProduct(itemArr.getJSONObject(i).getString("product"));
-			item.setQuantity(itemArr.getJSONObject(i).getInteger("quantity"));
-			item.setRate(itemArr.getJSONObject(i).getFloat("rate"));
-			item.setAmount(itemArr.getJSONObject(i).getFloat("amount"));
-			item.setTax(itemArr.getJSONObject(i).getString("tax"));
-			item.setDescription(itemArr.getJSONObject(i).getString("description"));
-			item.setInvoiceNo(toEdit.getInvoiceNo());
-			toEditItems.add(item);
+		if (itemArr != null && itemArr.size() > 0) {
+			for(int i=0; i<itemArr.size(); i++) {
+				OrderItem item = new OrderItem();
+				item.setOrderId(toEdit.getOrderId());
+				item.setProduct(itemArr.getJSONObject(i).getString("product"));
+				item.setQuantity(itemArr.getJSONObject(i).getInteger("quantity"));
+				item.setRate(itemArr.getJSONObject(i).getFloat("rate"));
+				item.setAmount(itemArr.getJSONObject(i).getFloat("amount"));
+				item.setTax(itemArr.getJSONObject(i).getString("tax"));
+				item.setDescription(itemArr.getJSONObject(i).getString("description"));
+				item.setInvoiceNo(toEdit.getInvoiceNo());
+				toEditItems.add(item);
+			}
+			orderItemMapper.insertList(toEditItems);
 		}
-		orderItemMapper.insertList(toEditItems);
 		
 		logger.info("Edit Success!");
 	}
