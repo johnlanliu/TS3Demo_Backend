@@ -194,8 +194,6 @@ public class OrderController extends ControllerBase {
 		String username = loginUser.getUsername();
 		toEdit.setSales(username);
 		
-		orderMapper.updateByPrimaryKey(toEdit);
-		
 		List<OrderItem> toEditItems = new ArrayList<OrderItem>();
 		JSONArray itemArr = editedOrder.getJSONArray("orderItems");
 		if (itemArr != null && itemArr.size() > 0) {
@@ -213,7 +211,15 @@ public class OrderController extends ControllerBase {
 			}
 			orderItemMapper.insertList(toEditItems);
 		}
-		
+		String descs = "";
+		List<OrderItem> currentItems = orderItemMapper.getOrderItemListByOrderId(toEdit.getOrderId());
+		if (currentItems != null && currentItems.size() > 0) {
+			for(int i = 0; i < currentItems.size(); i += 1)  {
+				descs = descs + currentItems.get(i).getDescription() + ", ";
+			}
+		}
+		toEdit.setDescription(descs);
+		orderMapper.updateByPrimaryKey(toEdit);
 		logger.info("Edit Success!");
 	}
 }
