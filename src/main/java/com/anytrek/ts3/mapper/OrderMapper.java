@@ -22,4 +22,6 @@ public interface OrderMapper extends MyMapper<Order> {
 	
 	// does not work
 	public Order getLastOrder() throws Exception;
+	
+	public Order getOrderByInvoiceNo(Integer invoiceNo) throws Exception;
 }

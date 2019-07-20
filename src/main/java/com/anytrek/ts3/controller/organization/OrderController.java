@@ -222,4 +222,15 @@ public class OrderController extends ControllerBase {
 		orderMapper.updateByPrimaryKey(toEdit);
 		logger.info("Edit Success!");
 	}
+	@JsonView(View.Summary.class)
+	@RequestMapping(value= {"/validInvoiceNo"}, method = RequestMethod.GET)
+	public Boolean validInvoiceNo(@RequestParam(value = "invoiceNo", required = true) Integer invoiceNo)
+			throws Exception {
+		Order result = new Order();
+		result = orderMapper.getOrderByInvoiceNo(invoiceNo);
+		logger.info(result.getInvoiceNo());
+		return result == null;
+	}
+	
+	
 }

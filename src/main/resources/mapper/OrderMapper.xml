@@ -45,4 +45,12 @@
 	<select id="getLastOrder" resultType="com.anytrek.ts3.model.Order">
 		SELECT * FROM t_order ORDER BY order_id DESC LIMIT 1
 	</select>
+	
+	<select id="getOrderByInvoiceNo"
+		parameterType="java.lang.Integer"
+		resultType = "com.anytrek.ts3.model.Order">
+		<![CDATA[
+			select * from t_order where invoice_No = #{invoiceNo} 
+		]]>
+	</select>
 </mapper>
