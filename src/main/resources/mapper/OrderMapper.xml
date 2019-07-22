@@ -21,14 +21,18 @@
 		INSERT INTO t_order(type, customer, description, status, 
 		invoice_no, invoice_date, due_date, tracking_no, sales,
 		create_time, billing_company, billing_contact, billing_number,
-		billing_email, billing_address, shipping_company, shipping_contact,
-		shipping_number, shipping_email, shipping_address, note, shipping_via, 
+		billing_email, billing_address, billing_city, billing_state, 
+		billing_country, billing_zip, shipping_company, shipping_contact,
+		shipping_number, shipping_email, shipping_address, shipping_city,
+		shipping_state, shipping_country, shipping_zip, note, shipping_via, 
 		shipping_fee, same_as_billing, payment_term)
 		 VALUES(#{type}, #{customer}, #{description}, 
 		#{status}, #{invoiceNo}, #{invoiceDate}, #{dueDate},
 		#{trackingNo}, #{sales}, #{createTime}, #{billingCompany}, #{billingContact},
-		#{billingNumber}, #{billingEmail}, #{billingAddress}, #{shippingCompany}, 
-		#{shippingContact}, #{shippingNumber}, #{shippingEmail}, #{shippingAddress},
+		#{billingNumber}, #{billingEmail}, #{billingAddress}, #{billingCity}, 
+		#{billingState}, #{billingCountry}, #{billingZip}, #{shippingCompany}, 
+		#{shippingContact}, #{shippingNumber}, #{shippingEmail}, #{shippingAddress}, 
+		#{shippingCity}, #{shippingState}, #{shippingCountry}, #{shippingZip}, 
 		#{note}, #{shippingVia}, #{shippingFee}, #{sameAsBilling}, #{paymentTerm})
 		<selectKey resultType="Integer" order="AFTER" 
 			keyProperty="orderId">
