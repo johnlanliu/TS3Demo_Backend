@@ -54,8 +54,14 @@ public class OrderController extends ControllerBase {
 		order.setCustomer(requestOrder.getString("customer"));
 		order.setStatus(requestOrder.getString("status"));
 		order.setInvoiceNo(requestOrder.getInteger("invoiceNo"));
-		String inv = requestOrder.getString("invoiceDate").replaceAll("[a-zA-Z]", " ");
-		String due = requestOrder.getString("dueDate").replaceAll("[a-zA-Z]", " ");
+		String inv = "";
+		String due = "";
+		if (requestOrder.getString("invoiceDate") != null) {
+			inv = requestOrder.getString("invoiceDate").replaceAll("[a-zA-Z]", " ");
+		}
+		if (requestOrder.getString("dueDate") != null) {
+			due = requestOrder.getString("dueDate").replaceAll("[a-zA-Z]", " ");
+		}
 		order.setInvoiceDate(inv);
 		order.setDueDate(due);
 		order.setTrackingNo(requestOrder.getString("trackingNo"));
@@ -177,8 +183,14 @@ public class OrderController extends ControllerBase {
 		toEdit.setCustomer(editedOrder.getString("customer"));
 		toEdit.setStatus(editedOrder.getString("status"));
 		toEdit.setInvoiceNo(editedOrder.getInteger("invoiceNo"));
-		String inv = editedOrder.getString("invoiceDate").replaceAll("[a-zA-Z]", " ");
-		String due = editedOrder.getString("dueDate").replaceAll("[a-zA-Z]", " ");
+		String inv = "";
+		String due = "";
+		if (editedOrder.getString("invoiceDate") != null) {
+			inv = editedOrder.getString("invoiceDate").replaceAll("[a-zA-Z]", " ");
+		}
+		if (editedOrder.getString("dueDate") != null) {
+			due = editedOrder.getString("dueDate").replaceAll("[a-zA-Z]", " ");
+		}
 		toEdit.setInvoiceDate(inv);
 		toEdit.setDueDate(due);
 		toEdit.setTrackingNo(editedOrder.getString("trackingNo"));
@@ -244,7 +256,6 @@ public class OrderController extends ControllerBase {
 			throws Exception {
 		Order result = new Order();
 		result = orderMapper.getOrderByInvoiceNo(invoiceNo);
-		logger.info(result);
 		return result == null;
 	}
 	
