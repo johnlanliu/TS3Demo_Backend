@@ -244,7 +244,7 @@ public class OrderController extends ControllerBase {
 			throws Exception {
 		Order result = new Order();
 		result = orderMapper.getOrderByInvoiceNo(invoiceNo);
-		logger.info(result.getInvoiceNo());
+		logger.info(result);
 		return result == null;
 	}
 	
