@@ -254,7 +254,6 @@ public class OrderController extends ControllerBase {
 	@RequestMapping(value= {"/validInvoiceNo"}, method = RequestMethod.GET)
 	public Boolean validInvoiceNo(@RequestParam(value = "invoiceNo", required = true) Integer invoiceNo)
 			throws Exception {
-		logger.info(invoiceNo);
 		Order result = new Order();
 		result = orderMapper.getOrderByInvoiceNo(invoiceNo);
 		return result == null;
