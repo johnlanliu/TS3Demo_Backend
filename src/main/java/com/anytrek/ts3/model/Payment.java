@@ -79,6 +79,22 @@ public class Payment implements java.io.Serializable {
 	private String billingAddress;
 	
 	@JsonView(View.Summary.class)
+	@Column(name = "billing_city", nullable = true, length = 100)
+	private String billingCity;
+	
+	@JsonView(View.Summary.class)
+	@Column(name = "billing_state", nullable = true, length = 100)
+	private String billingState;
+	
+	@JsonView(View.Summary.class)
+	@Column(name = "billing_country", nullable = true, length = 100)
+	private String billingCountry;
+	
+	@JsonView(View.Summary.class)
+	@Column(name = "billing_zip", nullable = true, length = 100)
+	private Integer billingZip;
+	
+	@JsonView(View.Summary.class)
 	@Column(name = "shipping_company", nullable = true, length = 100) 
 	private String shippingCompany;
 	
@@ -97,6 +113,22 @@ public class Payment implements java.io.Serializable {
 	@JsonView(View.Summary.class)
 	@Column(name = "shipping_address", nullable = true, length = 100) 
 	private String shippingAddress;
+	
+	@JsonView(View.Summary.class)
+	@Column(name = "shipping_city", nullable = true, length = 100)
+	private String shippingCity;
+	
+	@JsonView(View.Summary.class)
+	@Column(name = "shipping_state", nullable = true, length = 100)
+	private String shippingState;
+	
+	@JsonView(View.Summary.class)
+	@Column(name = "shipping_country", nullable = true, length = 100)
+	private String shippingCountry;
+	
+	@JsonView(View.Summary.class)
+	@Column(name = "shipping_zip", nullable = true, length = 100)
+	private Integer shippingZip;
 	
 	@JsonView(View.Summary.class)
 	@Column(name = "note", nullable = true, length = 300)
@@ -312,6 +344,70 @@ public class Payment implements java.io.Serializable {
 
 	public void setTrackingNo(String trackingNo) {
 		this.trackingNo = trackingNo;
+	}
+
+	public String getBillingCity() {
+		return billingCity;
+	}
+
+	public void setBillingCity(String billingCity) {
+		this.billingCity = billingCity;
+	}
+
+	public String getBillingState() {
+		return billingState;
+	}
+
+	public void setBillingState(String billingState) {
+		this.billingState = billingState;
+	}
+
+	public String getBillingCountry() {
+		return billingCountry;
+	}
+
+	public void setBillingCountry(String billingCountry) {
+		this.billingCountry = billingCountry;
+	}
+
+	public Integer getBillingZip() {
+		return billingZip;
+	}
+
+	public void setBillingZip(Integer billingZip) {
+		this.billingZip = billingZip;
+	}
+
+	public String getShippingCity() {
+		return shippingCity;
+	}
+
+	public void setShippingCity(String shippingCity) {
+		this.shippingCity = shippingCity;
+	}
+
+	public String getShippingState() {
+		return shippingState;
+	}
+
+	public void setShippingState(String shippingState) {
+		this.shippingState = shippingState;
+	}
+
+	public String getShippingCountry() {
+		return shippingCountry;
+	}
+
+	public void setShippingCountry(String shippingCountry) {
+		this.shippingCountry = shippingCountry;
+	}
+
+	public Integer getShippingZip() {
+		return shippingZip;
+	}
+
+	public void setShippingZip(Integer shippingZip) {
+		this.shippingZip = shippingZip;
 	}
 	
 	
