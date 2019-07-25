@@ -75,15 +75,27 @@ public class OrderController extends ControllerBase {
 		order.setBillingState(requestOrder.getString("billingState"));
 		order.setBillingCountry(requestOrder.getString("billingCountry"));
 		order.setBillingZip(requestOrder.getInteger("billingZip"));
-		order.setShippingCompany(requestOrder.getString("shippingCompany"));
-		order.setShippingContact(requestOrder.getString("shippingContact"));
-		order.setShippingNumber(requestOrder.getString("shippingNumber"));
-		order.setShippingEmail(requestOrder.getString("shippingEmail"));
-		order.setShippingAddress(requestOrder.getString("shippingAddress"));
-		order.setShippingCity(requestOrder.getString("shippingCity"));
-		order.setShippingState(requestOrder.getString("shippingState"));
-		order.setShippingCountry(requestOrder.getString("shippingCountry"));
-		order.setShippingZip(requestOrder.getInteger("shippingZip"));
+		if (requestOrder.getInteger("sameAsBilling") != 0) {
+			order.setShippingCompany(requestOrder.getString("billingCompany"));
+			order.setShippingContact(requestOrder.getString("billingContact"));
+			order.setShippingNumber(requestOrder.getString("billingNumber"));
+			order.setShippingEmail(requestOrder.getString("billingEmail"));
+			order.setShippingAddress(requestOrder.getString("billingAddress"));
+			order.setShippingCity(requestOrder.getString("billingCity"));
+			order.setShippingState(requestOrder.getString("billingState"));
+			order.setShippingCountry(requestOrder.getString("billingCountry"));
+			order.setShippingZip(requestOrder.getInteger("billingZip"));
+		} else {
+			order.setShippingCompany(requestOrder.getString("shippingCompany"));
+			order.setShippingContact(requestOrder.getString("shippingContact"));
+			order.setShippingNumber(requestOrder.getString("shippingNumber"));
+			order.setShippingEmail(requestOrder.getString("shippingEmail"));
+			order.setShippingAddress(requestOrder.getString("shippingAddress"));
+			order.setShippingCity(requestOrder.getString("shippingCity"));
+			order.setShippingState(requestOrder.getString("shippingState"));
+			order.setShippingCountry(requestOrder.getString("shippingCountry"));
+			order.setShippingZip(requestOrder.getInteger("shippingZip"));
+		}
 		order.setNote(requestOrder.getString("note"));
 		order.setShippingVia(requestOrder.getString("shippingVia"));
 		order.setShippingFee(requestOrder.getFloat("shippingFee"));
@@ -112,9 +124,10 @@ public class OrderController extends ControllerBase {
 			item.setDescription(itemArr.getJSONObject(i).getString("description"));
 			item.setInvoiceNo(order.getInvoiceNo());
 			items.add(item);
-		}		
-		orderItemMapper.insertList(items);
-
+		}
+		if (items.size() != 0) {
+			orderItemMapper.insertList(items);
+		}
 		
 		logger.info("Insert Success!");
 		return "OK";
@@ -252,8 +265,11 @@ public class OrderController extends ControllerBase {
 	}
 	@JsonView(View.Summary.class)
 	@RequestMapping(value= {"/validInvoiceNo"}, method = RequestMethod.GET)
-	public Boolean validInvoiceNo(@RequestParam(value = "invoiceNo", required = true) Integer invoiceNo)
+	public Boolean validInvoiceNo(@RequestParam(value = "invoiceNo", required = false) Integer invoiceNo)
 			throws Exception {
+		if (invoiceNo == null) {
+			return false;
+		}
 		Order result = new Order();
 		result = orderMapper.getOrderByInvoiceNo(invoiceNo);
 		return result == null;
