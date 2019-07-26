@@ -122,7 +122,6 @@ public class OrderController extends ControllerBase {
 			item.setAmount(itemArr.getJSONObject(i).getFloat("amount"));
 			item.setTax(itemArr.getJSONObject(i).getString("tax"));
 			item.setDescription(itemArr.getJSONObject(i).getString("description"));
-			item.setInvoiceNo(order.getInvoiceNo());
 			items.add(item);
 		}
 		if (items.size() != 0) {
@@ -247,7 +246,6 @@ public class OrderController extends ControllerBase {
 				item.setAmount(itemArr.getJSONObject(i).getFloat("amount"));
 				item.setTax(itemArr.getJSONObject(i).getString("tax"));
 				item.setDescription(itemArr.getJSONObject(i).getString("description"));
-				item.setInvoiceNo(toEdit.getInvoiceNo());
 				toEditItems.add(item);
 			}
 			orderItemMapper.insertList(toEditItems);

@@ -28,4 +28,6 @@ public interface PaymentMapper extends MyMapper<Payment>{
 	public Payment getPaymentByInvoiceNo(Integer invoiceNo) throws Exception;
 	
 	public Payment getPaymentByPaymentId(Integer paymentId) throws Exception;
+	
+	public Integer insertPayment(Payment payment) throws Exception;
 }

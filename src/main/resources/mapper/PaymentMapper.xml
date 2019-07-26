@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.anytrek.ts3.mapper.PaymentMapper">
+	<insert id="insertPayment" 
+		parameterType="com.anytrek.ts3.model.Payment"
+		>
+		INSERT INTO t_payment(amount, customer, status, 
+		invoice_no, invoice_date, due_date, tracking_no, sales,
+		billing_company, billing_contact, billing_number,
+		billing_email, billing_address, billing_city, billing_state, 
+		billing_country, billing_zip, shipping_company, shipping_contact,
+		shipping_number, shipping_email, shipping_address, shipping_city,
+		shipping_state, shipping_country, shipping_zip, note, shipping_via, 
+		shipping_fee, invoice_type, payment_term)
+		 VALUES(#{amount}, #{customer}, #{status}, #{invoiceNo}, #{invoiceDate}, #{dueDate},
+		#{trackingNo}, #{sales}, #{billingCompany}, #{billingContact},
+		#{billingNumber}, #{billingEmail}, #{billingAddress}, #{billingCity}, 
+		#{billingState}, #{billingCountry}, #{billingZip}, #{shippingCompany}, 
+		#{shippingContact}, #{shippingNumber}, #{shippingEmail}, #{shippingAddress}, 
+		#{shippingCity}, #{shippingState}, #{shippingCountry}, #{shippingZip}, 
+		#{note}, #{shippingVia}, #{shippingFee}, #{invoiceType}, #{paymentTerm})
+		<selectKey resultType="Integer" order="AFTER" 
+			keyProperty="paymentId">
+			SELECT LAST_INSERT_ID() as paymentId
+			</selectKey>
+	</insert>
 	<select id="getPaymentByInvoiceNo"
 		parameterType="java.lang.Integer"
 		resultType="com.anytrek.ts3.model.Payment">

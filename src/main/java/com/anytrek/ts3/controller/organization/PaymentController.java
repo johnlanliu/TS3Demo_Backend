@@ -1,6 +1,7 @@
 package com.anytrek.ts3.controller.organization;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,10 +26,14 @@ import com.anytrek.ts3.mapper.PaymentMapper;
 import com.anytrek.ts3.model.User;
 import com.anytrek.util.PasswordUtil;
 import com.fasterxml.jackson.annotation.JsonView;
-
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.anytrek.ts3.ControllerBase;
 import com.anytrek.ts3.dto.PaymentDetailDto;
+import com.anytrek.ts3.model.OrderItem;
 import com.anytrek.ts3.model.Payment;
+import com.anytrek.ts3.model.PaymentItem;
+import com.anytrek.ts3.mapper.PaymentItemMapper;
 
 @RestController
 @RequestMapping("/orgMPayment")
@@ -40,21 +45,73 @@ public class PaymentController extends ControllerBase {
 	@Autowired
 	private PaymentMapper paymentMapper;
 	
+	private PaymentItemMapper paymentItemMapper;
+	
 	@JsonView(View.Summary.class)
 	@RequestMapping(value = { "/addPayment" }, method = RequestMethod.POST)
-	public Payment addPayment(@RequestBody(required = false) Payment requestPayment) throws Exception {
+	public Payment addPayment(@RequestBody(required = false) JSONObject requestPayment) throws Exception {
+		Payment payment = new Payment();
 		User loginUser = getUserByHeader();
 		String username = loginUser.getUsername();
-		String invDate = requestPayment.getInvoiceDate();
-		String dDate = requestPayment.getDueDate();
-		String newInvoiceDate = invDate.replaceAll("[a-zA-Z]", " ");
-		String newDueDate = dDate.replaceAll("[a-zA-Z]", " ");
-		requestPayment.setInvoiceDate(newInvoiceDate);
-		requestPayment.setDueDate(newDueDate);
-		requestPayment.setSales(username);
-		paymentMapper.insert(requestPayment);
+		payment.setAmount(requestPayment.getFloat("amount"));
+		payment.setInvoiceNo(requestPayment.getInteger("invoiceNo"));
+		payment.setCustomer(requestPayment.getString("customer"));
+		String inv = "";
+		String due = "";
+		if (requestPayment.getString("invoiceDate") != null) {
+			inv = requestPayment.getString("invoiceDate").replaceAll("[a-zA-Z]", " ");
+		}
+		if (requestPayment.getString("dueDate") != null) {
+			due = requestPayment.getString("dueDate").replaceAll("[a-zA-Z]", " ");
+		}
+		payment.setInvoiceDate(inv);
+		payment.setDueDate(due);
+		payment.setStatus(requestPayment.getString("status"));
+		payment.setSales(username);
+		payment.setBillingCompany(requestPayment.getString("billingCompany"));
+		payment.setBillingContact(requestPayment.getString("billingContact"));
+		payment.setBillingNumber(requestPayment.getString("billingNumber"));
+		payment.setBillingEmail(requestPayment.getString("billingEmail"));
+		payment.setBillingAddress(requestPayment.getString("billingAddress"));
+		payment.setBillingCity(requestPayment.getString("billingCity"));
+		payment.setBillingCountry(requestPayment.getString("billingCountry"));
+		payment.setBillingState(requestPayment.getString("billingState"));
+		payment.setBillingZip(requestPayment.getInteger("billingZip"));
+		payment.setShippingCompany(requestPayment.getString("shippingCompany"));
+		payment.setShippingContact(requestPayment.getString("shippingContact"));
+		payment.setShippingNumber(requestPayment.getString("shippingNumber"));
+		payment.setShippingEmail(requestPayment.getString("shippingEmail"));
+		payment.setShippingAddress(requestPayment.getString("shippingAddress"));
+		payment.setShippingCity(requestPayment.getString("shippingCity"));
+		payment.setShippingCountry(requestPayment.getString("shippingCountry"));
+		payment.setShippingState(requestPayment.getString("shippingState"));
+		payment.setShippingZip(requestPayment.getInteger("shippingZip"));
+		payment.setNote(requestPayment.getString("note"));
+		payment.setShippingVia(requestPayment.getString("shippingVia"));
+		payment.setPaymentTerm(requestPayment.getString("paymentTerm"));
+		payment.setInvoiceType(requestPayment.getString("invoiceType"));
+		payment.setShippingFee(requestPayment.getFloat("shippingFee"));
+		payment.setTrackingNo(requestPayment.getString("trackingNo"));
+		paymentMapper.insertPayment(payment);
+		JSONArray itemArr = requestPayment.getJSONArray("paymentItems");
+		List<PaymentItem> items = new ArrayList<>();
+		for (int i = 0; i < itemArr.size(); i += 1) {
+			PaymentItem item = new PaymentItem();
+			item.setPaymentId(payment.getPaymentId());
+			item.setProduct(itemArr.getJSONObject(i).getString("product"));
+			item.setQuantity(itemArr.getJSONObject(i).getInteger("quantity"));
+			item.setRate(itemArr.getJSONObject(i).getFloat("rate"));
+			item.setAmount(itemArr.getJSONObject(i).getFloat("amount"));
+			item.setTax(itemArr.getJSONObject(i).getString("tax"));
+			item.setDescription(itemArr.getJSONObject(i).getString("description"));
+			items.add(item);
+		}
+		if (items.size() != 0) {
+			paymentItemMapper.insertList(items);
+		}
+
 		logger.info("Insert Success!");
-		return requestPayment;
+		return payment;
 	}
 	
 	@JsonView(View.Summary.class)
@@ -115,45 +172,70 @@ public class PaymentController extends ControllerBase {
 	
 	@JsonView(View.Summary.class)
 	@RequestMapping(value = {"/editPayment"}, method = RequestMethod.POST)
-	public Payment editPayment(@RequestBody(required = true) Payment editPayment) throws Exception {
-		Payment curPayment = paymentMapper.selectByPrimaryKey(editPayment.getPaymentId());
-		if (curPayment == null) {
-			throw new WebException(ErrorCode.USER_NOT_FOUND);
-		}	
-		curPayment.setAmount(editPayment.getAmount());
-		curPayment.setInvoiceNo(editPayment.getInvoiceNo());
-		curPayment.setCustomer(editPayment.getCustomer());
-		curPayment.setInvoiceDate(editPayment.getInvoiceDate());
-		curPayment.setDueDate(editPayment.getDueDate());
-		curPayment.setStatus(editPayment.getStatus());
-		curPayment.setSales(editPayment.getSales());
-		curPayment.setBillingCompany(editPayment.getBillingCompany());
-		curPayment.setBillingContact(editPayment.getBillingContact());
-		curPayment.setBillingNumber(editPayment.getBillingNumber());
-		curPayment.setBillingEmail(editPayment.getBillingEmail());
-		curPayment.setBillingAddress(editPayment.getBillingAddress());
-		curPayment.setBillingCity(editPayment.getBillingCity());
-		curPayment.setBillingState(editPayment.getBillingState());
-		curPayment.setBillingCountry(editPayment.getBillingCountry());
-		curPayment.setBillingZip(editPayment.getBillingZip());
-		curPayment.setShippingCompany(editPayment.getShippingCompany());
-		curPayment.setShippingContact(editPayment.getShippingContact());
-		curPayment.setShippingNumber(editPayment.getShippingNumber());
-		curPayment.setShippingEmail(editPayment.getShippingEmail());
-		curPayment.setShippingAddress(editPayment.getShippingAddress());
-		curPayment.setShippingCity(editPayment.getShippingCity());
-		curPayment.setShippingState(editPayment.getShippingState());
-		curPayment.setShippingCountry(editPayment.getShippingCountry());
-		curPayment.setShippingZip(editPayment.getShippingZip());
-		curPayment.setNote(editPayment.getNote());
-		curPayment.setShippingVia(editPayment.getShippingVia());
-		curPayment.setPaymentTerm(editPayment.getPaymentTerm());
-		curPayment.setInvoiceType(editPayment.getInvoiceType());
-		curPayment.setShippingFee(editPayment.getShippingFee());
-		curPayment.setTrackingNo(editPayment.getTrackingNo());
-		paymentMapper.updateByPrimaryKeySelective(curPayment);
+	public Payment editPayment(@RequestBody(required = true) JSONObject editPayment) throws Exception {
+		Payment curPayment = paymentMapper.selectByPrimaryKey(editPayment.getInteger("paymentId"));
+		User loginUser = getUserByHeader();
+		String username = loginUser.getUsername();
+		curPayment.setAmount(editPayment.getFloat("amount"));
+		curPayment.setInvoiceNo(editPayment.getInteger("invoiceNo"));
+		curPayment.setCustomer(editPayment.getString("customer"));
+		String inv = "";
+		String due = "";
+		if (editPayment.getString("invoiceDate") != null) {
+			inv = editPayment.getString("invoiceDate").replaceAll("[a-zA-Z]", " ");
+		}
+		if (editPayment.getString("dueDate") != null) {
+			due = editPayment.getString("dueDate").replaceAll("[a-zA-Z]", " ");
+		}
+		curPayment.setInvoiceDate(inv);
+		curPayment.setDueDate(due);
+		curPayment.setStatus(editPayment.getString("status"));
+		curPayment.setSales(username);
+		curPayment.setBillingCompany(editPayment.getString("billingCompany"));
+		curPayment.setBillingContact(editPayment.getString("billingContact"));
+		curPayment.setBillingNumber(editPayment.getString("billingNumber"));
+		curPayment.setBillingEmail(editPayment.getString("billingEmail"));
+		curPayment.setBillingAddress(editPayment.getString("billingAddress"));
+		curPayment.setBillingCity(editPayment.getString("billingCity"));
+		curPayment.setBillingCountry(editPayment.getString("billingCountry"));
+		curPayment.setBillingState(editPayment.getString("billingState"));
+		curPayment.setBillingZip(editPayment.getInteger("billingZip"));
+		curPayment.setShippingCompany(editPayment.getString("shippingCompany"));
+		curPayment.setShippingContact(editPayment.getString("shippingContact"));
+		curPayment.setShippingNumber(editPayment.getString("shippingNumber"));
+		curPayment.setShippingEmail(editPayment.getString("shippingEmail"));
+		curPayment.setShippingAddress(editPayment.getString("shippingAddress"));
+		curPayment.setShippingCity(editPayment.getString("shippingCity"));
+		curPayment.setShippingCountry(editPayment.getString("shippingCountry"));
+		curPayment.setShippingState(editPayment.getString("shippingState"));
+		curPayment.setShippingZip(editPayment.getInteger("shippingZip"));
+		curPayment.setNote(editPayment.getString("note"));
+		curPayment.setShippingVia(editPayment.getString("shippingVia"));
+		curPayment.setPaymentTerm(editPayment.getString("paymentTerm"));
+		curPayment.setInvoiceType(editPayment.getString("invoiceType"));
+		curPayment.setShippingFee(editPayment.getFloat("shippingFee"));
+		curPayment.setTrackingNo(editPayment.getString("trackingNo"));
+		paymentMapper.updateByPrimaryKey(curPayment);
+		JSONArray itemArr = editPayment.getJSONArray("paymentItems");
+		List<PaymentItem> items = new ArrayList<>();
+		if (itemArr != null && itemArr.size() > 0) {
+			for (int i = 0; i < itemArr.size(); i += 1) {
+				PaymentItem item = new PaymentItem();
+				item.setPaymentId(curPayment.getPaymentId());
+				item.setProduct(itemArr.getJSONObject(i).getString("product"));
+				item.setQuantity(itemArr.getJSONObject(i).getInteger("quantity"));
+				item.setRate(itemArr.getJSONObject(i).getFloat("rate"));
+				item.setAmount(itemArr.getJSONObject(i).getFloat("amount"));
+				item.setTax(itemArr.getJSONObject(i).getString("tax"));
+				item.setDescription(itemArr.getJSONObject(i).getString("description"));
+				items.add(item);
+			}
+		}
+	
+		if (items.size() != 0) {
+			paymentItemMapper.insertList(items);
+		}
 		return curPayment;
-		
 	}
 	
 }
