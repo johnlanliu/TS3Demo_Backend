@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.anytrek.ts3.mapper.PaymentItemMapper">
+	<select id="getPaymentItemListByPaymentId" 
+		parameterType="java.lang.Integer"
+		resultType="com.anytrek.ts3.model.PaymentItem">
+		<![CDATA[
+		select * from t_payment_item where payment_id = #{paymentId} 
+		]]>
+		<!-- select * from t_payment_item -->
+		<!-- <trim prefix="where" suffix="" prefixOverrides="and"
+			suffixOverrides="">
+			<if test="paymentId!=null">
+				<![CDATA[and payment_id = #{paymentId}]]>
+			</if>
+		</trim> -->
+	</select>
+</mapper>

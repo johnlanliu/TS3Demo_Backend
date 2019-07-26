@@ -21,41 +21,41 @@ import com.anytrek.ts3.common.FlagConstants;
 import com.anytrek.ts3.dto.View;
 import com.anytrek.ts3.exception.ErrorCode;
 import com.anytrek.ts3.exception.WebException;
-import com.anytrek.ts3.mapper.OrderMapper;
-import com.anytrek.ts3.mapper.OrderItemMapper;
+import com.anytrek.ts3.mapper.PaymentItemMapper;
 import com.anytrek.ts3.model.User;
 import com.anytrek.util.PasswordUtil;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.anytrek.ts3.ControllerBase;
-import com.anytrek.ts3.model.OrderItem;
+import com.anytrek.ts3.model.PaymentItem;
+import com.anytrek.ts3.model.PaymentItem;
 
 @RestController
-@RequestMapping("/orgMOrderItem")
-public class OrderItemController extends ControllerBase {
-	
+@RequestMapping("/orgMPaymentItem")
+public class PaymentItemController extends ControllerBase {
 	@SuppressWarnings("unused")
-	private static Logger logger = LogManager.getLogger(OrderItemController.class);
+	
+	private static Logger logger = LogManager.getLogger(PaymentItemController.class);
 	
 	@Autowired
-	private OrderItemMapper orderItemMapper;
+	private PaymentItemMapper paymentItemMapper;
 	
 	@JsonView(View.Summary.class)
-	@RequestMapping(value = { "/getOrderItemList" }, method = RequestMethod.GET)
-	public List<OrderItem> getOrderItemList(@RequestParam(value = "orderId", required = true) Integer orderId) throws Exception {
-		List<OrderItem> contents = new ArrayList<>();
+	@RequestMapping(value = { "/getPaymentItemList" }, method = RequestMethod.GET)
+	public List<PaymentItem> getPaymentItemList(@RequestParam(value = "paymentId", required = true) Integer paymentId) throws Exception {
+		List<PaymentItem> contents = new ArrayList<>();
 		
-		if (orderId != null) {
-			contents = orderItemMapper.getOrderItemListByOrderId(orderId);
+		if (paymentId != null) {
+			contents = paymentItemMapper.getPaymentItemListByPaymentId(paymentId);
 		}
 		
 		return contents;
 	}
 	
-	@RequestMapping(value = {"/deleteOrderItem"}, method = RequestMethod.POST)
-	public void deleteOrderItem(@RequestParam(value = "itemId", required = true) Integer itemId) throws Exception {
-		orderItemMapper.deleteByPrimaryKey(itemId);
+	@RequestMapping(value = {"/deletePaymentItem"}, method = RequestMethod.POST)
+	public void deletePaymentItem(@RequestParam(value = "itemId", required = true) Integer itemId) throws Exception {
+		paymentItemMapper.deleteByPrimaryKey(itemId);
 		logger.info("Delete Success!");
 	}
 }
