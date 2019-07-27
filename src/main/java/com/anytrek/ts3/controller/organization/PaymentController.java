@@ -92,10 +92,14 @@ public class PaymentController extends ControllerBase {
 		payment.setInvoiceType(requestPayment.getString("invoiceType"));
 		payment.setShippingFee(requestPayment.getFloat("shippingFee"));
 		payment.setTrackingNo(requestPayment.getString("trackingNo"));
-		paymentMapper.insertPayment(payment);
 		JSONArray itemArr = requestPayment.getJSONArray("paymentItems");
-		List<PaymentItem> items = new ArrayList<>();
+		
+		paymentMapper.insertPayment(payment);
+		List<PaymentItem> items = new ArrayList<PaymentItem>();
 		for (int i = 0; i < itemArr.size(); i += 1) {
+			if (itemArr.getJSONObject(i) == null) {
+				logger.info("dafjasiofja");
+			}
 			PaymentItem item = new PaymentItem();
 			item.setPaymentId(payment.getPaymentId());
 			item.setProduct(itemArr.getJSONObject(i).getString("product"));
@@ -105,6 +109,7 @@ public class PaymentController extends ControllerBase {
 			item.setTax(itemArr.getJSONObject(i).getString("tax"));
 			item.setDescription(itemArr.getJSONObject(i).getString("description"));
 			items.add(item);
+		
 		}
 		if (items.size() != 0) {
 			paymentItemMapper.insertList(items);
