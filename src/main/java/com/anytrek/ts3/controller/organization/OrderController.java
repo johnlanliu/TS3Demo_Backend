@@ -178,12 +178,12 @@ public class OrderController extends ControllerBase {
 	
 	// does not work
 	@JsonView(View.Summary.class)
-	@RequestMapping(value = {"/getLastOrderId"}, method = RequestMethod.GET)
+	@RequestMapping(value = {"/getLastInvoiceNo"}, method = RequestMethod.GET)
 	public Integer getLastOrderId() throws Exception {
 		Order last = orderMapper.getLastOrder();
-		Integer lastId = last.getOrderId();
-		logger.info(lastId);
-		return lastId;
+		Integer lastInvoiceNo = last.getInvoiceNo();
+		logger.info(lastInvoiceNo);
+		return lastInvoiceNo;
 	}
 	
 	@JsonView(View.Summary.class)
