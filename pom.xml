@@ -221,6 +221,37 @@
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
 		</dependency>
+		
+		<!-- data jar -->
+		<dependency>
+   		 	<groupId> com.intuit.quickbooks-online </groupId>
+  		 	<artifactId> ipp-v3-java-data </artifactId>
+  		  	<version> 5.0.5 </version>
+		</dependency>
+
+		<!-- devkit jar with dependencies-->
+		<dependency>
+    		<groupId>com.intuit.quickbooks-online</groupId>
+    		<artifactId>ipp-v3-java-devkit</artifactId>
+    		<classifier>jar-with-dependencies</classifier>
+   		 	<version>5.0.5</version>
+		</dependency>
+
+		<!-- oauth jar with dependencies-->
+		<dependency>
+    		<groupId>com.intuit.quickbooks-online</groupId>
+    		<artifactId>oauth2-platform-api</artifactId>
+    		<classifier>jar-with-dependencies</classifier>
+    		<version>5.0.5</version>
+		</dependency>
+		
+		<!-- qbapihelper jar with dependencies-->
+		<dependency>
+    		<groupId>com.intuit.quickbooks-online</groupId>
+    		<artifactId>ipp-java-qbapihelper</artifactId>
+    		<classifier>jar-with-dependencies</classifier>
+    		<version>5.0.5</version>
+		</dependency>
 	</dependencies>
 
 	<build>
