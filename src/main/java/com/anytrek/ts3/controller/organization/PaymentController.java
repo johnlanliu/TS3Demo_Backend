@@ -45,11 +45,12 @@ public class PaymentController extends ControllerBase {
 	@Autowired
 	private PaymentMapper paymentMapper;
 	
+	@Autowired
 	private PaymentItemMapper paymentItemMapper;
 	
 	@JsonView(View.Summary.class)
 	@RequestMapping(value = { "/addPayment" }, method = RequestMethod.POST)
-	public Payment addPayment(@RequestBody(required = false) JSONObject requestPayment) throws Exception {
+	public String addPayment(@RequestBody(required = false) JSONObject requestPayment) throws Exception {
 		Payment payment = new Payment();
 		User loginUser = getUserByHeader();
 		String username = loginUser.getUsername();
@@ -96,9 +97,9 @@ public class PaymentController extends ControllerBase {
 		
 		paymentMapper.insertPayment(payment);
 		List<PaymentItem> items = new ArrayList<PaymentItem>();
-		for (int i = 0; i < itemArr.size(); i += 1) {
+		for (int i = 0; i < itemArr.size(); i++) {
 			if (itemArr.getJSONObject(i) == null) {
-				logger.info("dafjasiofja");
+				System.out.println("dajfiaojfidsao");
 			}
 			PaymentItem item = new PaymentItem();
 			item.setPaymentId(payment.getPaymentId());
@@ -114,9 +115,12 @@ public class PaymentController extends ControllerBase {
 		if (items.size() != 0) {
 			paymentItemMapper.insertList(items);
 		}
+//		for (int i = 0; i < items.size(); i++) {
+//			paymentItemMapper.insertPaymentItem(items.get(i));
+//		}
 
 		logger.info("Insert Success!");
-		return payment;
+		return "OK";
 	}
 	
 	@JsonView(View.Summary.class)

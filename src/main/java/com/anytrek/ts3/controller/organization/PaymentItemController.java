@@ -29,7 +29,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.anytrek.ts3.ControllerBase;
 import com.anytrek.ts3.model.PaymentItem;
-import com.anytrek.ts3.model.PaymentItem;
 
 @RestController
 @RequestMapping("/orgMPaymentItem")

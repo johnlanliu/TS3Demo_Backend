@@ -15,4 +15,16 @@
 			</if>
 		</trim> -->
 	</select>
+	<insert id="insertPaymentItem" 
+		parameterType="com.anytrek.ts3.model.PaymentItem"
+		>
+		INSERT INTO t_payment(payment_id, product, quantity, 
+		rate, amount, tax, description)
+		 VALUES(#{paymentId}, #{product}, #{quantity}, 
+		 #{rate}, #{amount}, #{tax}, #{description})
+		<selectKey resultType="Integer" order="AFTER" 
+			keyProperty="itemId">
+			SELECT LAST_INSERT_ID() as itemId
+			</selectKey>
+	</insert>
 </mapper>
