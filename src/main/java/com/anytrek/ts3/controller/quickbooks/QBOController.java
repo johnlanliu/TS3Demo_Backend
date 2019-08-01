@@ -5,7 +5,9 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,8 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.intuit.developer.helloworld.client.OAuth2PlatformClientFactory;
-import com.intuit.developer.helloworld.helper.QBOServiceHelper;
+import com.anytrek.ts3.qbmodel.OAuth2PlatformClientFactory;
+import com.anytrek.ts3.qbmodel.QBOServiceHelper;
 import com.intuit.ipp.data.CompanyInfo;
 import com.intuit.ipp.data.Error;
 import com.intuit.ipp.exception.FMSException;
@@ -40,7 +42,7 @@ public class QBOController {
     public QBOServiceHelper helper;
 
 	
-	private static final Logger logger = Logger.getLogger(QBOController.class);
+	private static final Logger logger = LogManager.getLogger(QBOController.class);
 	private static final String failureMsg="Failed";
 	
 	
@@ -56,7 +58,12 @@ public class QBOController {
 
     	String realmId = (String)session.getAttribute("realmId");
     	if (StringUtils.isEmpty(realmId)) {
-    		return new JSONObject().put("response","No realm ID.  QBO calls only work if the accounting scope was passed!").toString();
+    		try {
+    			return new JSONObject().put("response","No realm ID.  QBO calls only work if the accounting scope was passed!").toString();
+    		}
+    		catch (JSONException ex) {
+    			return "Couldn't .put in JSONObject";
+    		}
     	}
     	String accessToken = (String)session.getAttribute("access_token");
     	
@@ -101,16 +108,31 @@ public class QBOController {
 					
 				} catch (OAuthException e1) {
 					logger.error("Error while calling bearer token :: " + e.getMessage());
-					return new JSONObject().put("response",failureMsg).toString();
+					try {
+						return new JSONObject().put("response",failureMsg).toString();
+					}
+					catch (JSONException ex) {
+						return "Couldn't .put in JSONObject";
+					}
 				} catch (FMSException e1) {
 					logger.error("Error while calling company currency :: " + e.getMessage());
-					return new JSONObject().put("response",failureMsg).toString();
+					try {
+						return new JSONObject().put("response",failureMsg).toString();
+					}
+					catch (JSONException ex) {
+						return "Couldn't .put in JSONObject";
+					}
 				}
 	            
 			} catch (FMSException e) {
 				List<Error> list = e.getErrorList();
 				list.forEach(error -> logger.error("Error while calling executeQuery :: " + error.getMessage()));
-				return new JSONObject().put("response",failureMsg).toString();
+				try {
+					return new JSONObject().put("response",failureMsg).toString();
+				}
+				catch (JSONException ex) {
+					return "Couldn't .put in JSONObject";
+				}
 			}
 		
     }
@@ -125,7 +147,12 @@ public class QBOController {
 				return jsonInString;
 			} catch (JsonProcessingException e) {
 				logger.error("Exception while getting company info ", e);
-				return new JSONObject().put("response",failureMsg).toString();
+				try {
+					return new JSONObject().put("response",failureMsg).toString();
+				}
+				catch (JSONException ex) {
+					
+				}
 			}
 			
 		}

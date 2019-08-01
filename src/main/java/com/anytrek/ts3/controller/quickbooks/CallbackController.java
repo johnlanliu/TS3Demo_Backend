@@ -2,13 +2,14 @@ package com.anytrek.ts3.controller.quickbooks;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.intuit.developer.helloworld.client.OAuth2PlatformClientFactory;
+import com.anytrek.ts3.qbmodel.OAuth2PlatformClientFactory;
 import com.intuit.oauth2.client.OAuth2PlatformClient;
 import com.intuit.oauth2.data.BearerTokenResponse;
 import com.intuit.oauth2.exception.OAuthException;
@@ -23,7 +24,7 @@ public class CallbackController {
 	@Autowired
 	OAuth2PlatformClientFactory factory;
 
-    private static final Logger logger = Logger.getLogger(CallbackController.class);
+    private static final Logger logger = LogManager.getLogger(CallbackController.class);
     
     /**
      *  This is the redirect handler you configure in your app on developer.intuit.com
