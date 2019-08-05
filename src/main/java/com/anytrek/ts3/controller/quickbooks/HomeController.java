@@ -50,8 +50,7 @@ public class HomeController {
 		logger.info("inside connectToQuickbooks ");
 		OAuth2Config oauth2Config = factory.getOAuth2Config();
 		
-//		String redirectUri = factory.getPropertyValue("OAuth2AppRedirectUri"); 
-		String redirectUri = "https://google.com"; 
+		String redirectUri = factory.getPropertyValue("OAuth2AppRedirectUri"); 
 
 		
 		String csrf = oauth2Config.generateCSRFToken();
@@ -59,7 +58,7 @@ public class HomeController {
 		try {
 			List<Scope> scopes = new ArrayList<Scope>();
 			scopes.add(Scope.Accounting);
-			return new RedirectView(oauth2Config.prepareUrl(scopes, redirectUri, csrf));
+			return new RedirectView(oauth2Config.prepareUrl(scopes, redirectUri, csrf), true, true, false);
 		} catch (InvalidRequestException e) {
 			logger.error("Exception calling connectToQuickbooks ", e);
 		}
