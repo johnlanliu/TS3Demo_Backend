@@ -33,6 +33,7 @@ import com.intuit.oauth2.exception.OAuthException;
  *
  */
 @Controller
+@RequestMapping("/QBO")
 public class QBOController {
 	
 	@Autowired
@@ -55,7 +56,7 @@ public class QBOController {
 	@ResponseBody
     @RequestMapping("/getCompanyInfo")
     public String callQBOCompanyInfo(HttpSession session) {
-
+		logger.info("inside getCompanyInfo");
     	String realmId = (String)session.getAttribute("realmId");
     	if (StringUtils.isEmpty(realmId)) {
     		try {
