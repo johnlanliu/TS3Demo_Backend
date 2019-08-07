@@ -145,7 +145,7 @@ public class UserController extends ControllerBase {
 		Integer roleId = requestUser.getRoleId();
 
 		if (orgId == null || orgId <= 0 || roleId == null || roleId <= 0) {
-			throw new WebException(ErrorCode.USER_PARAM_ERROR);
+			throw new WebException(ErrorCode.USER_PARAMETER_ERROR);
 		}
 		// 判断username和email是否存在
 		if (userMapper.getRepeatUser(requestUser) != null) {
@@ -176,7 +176,7 @@ public class UserController extends ControllerBase {
 		Integer orgId = requestUser.getOrgId();
 		Integer roleId = requestUser.getRoleId();
 		if (orgId == null || orgId <= 0) {
-			throw new WebException(ErrorCode.USER_PARAM_ERROR);
+			throw new WebException(ErrorCode.USER_PARAMETER_ERROR);
 		}
 
 		// 先查找再进行差分更新

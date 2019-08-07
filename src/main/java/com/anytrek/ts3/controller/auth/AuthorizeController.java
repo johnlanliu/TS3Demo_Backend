@@ -272,7 +272,7 @@ public class AuthorizeController extends ControllerBase {
 	public User getUserByKey(@RequestParam(value = "activationKey", required = true) String activationKey,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		if (StringUtils.isEmpty(activationKey)) {
-			throw new WebException(ErrorCode.USER_PARAM_ERROR);
+			throw new WebException(ErrorCode.USER_PARAMETER_ERROR);
 		}
 		User user = userMapper.getUserByKey(activationKey);
 		if (user == null) {
@@ -293,10 +293,10 @@ public class AuthorizeController extends ControllerBase {
 		String key = jsonobject.getString("key");
 		String newPwd = jsonobject.getString("password");
 		if (StringUtils.isEmpty(newPwd)) {
-			throw new WebException(ErrorCode.USER_PARAM_ERROR);
+			throw new WebException(ErrorCode.USER_PARAMETER_ERROR);
 		}
 		if (StringUtils.isEmpty(key)) {
-			throw new WebException(ErrorCode.USER_PARAM_ERROR, "Key is null.");
+			throw new WebException(ErrorCode.USER_PARAMETER_ERROR, "Key is null.");
 		}
 		User user = userMapper.getUserByKey(key);
 		if (user == null) {
@@ -323,7 +323,7 @@ public class AuthorizeController extends ControllerBase {
 		String newPwd = jsonobject.getString("newPwd");
 
 		if (StringUtils.isEmpty(oldPwd) || StringUtils.isEmpty(newPwd)) {
-			throw new WebException(ErrorCode.USER_PARAM_ERROR, "password is null.");
+			throw new WebException(ErrorCode.USER_PARAMETER_ERROR, "password is null.");
 		}
 		loginUser = userMapper.selectByPrimaryKey(loginUser.getUserId());
 		if (loginUser == null) {
