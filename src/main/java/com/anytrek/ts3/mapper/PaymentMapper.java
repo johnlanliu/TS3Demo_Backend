@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.anytrek.ts3.model.Payment;
 import com.anytrek.ts3.util.MyMapper;
-import com.anytrek.ts3.dto.PaymentDetailDto;
 
 /**
  * 
@@ -23,11 +22,7 @@ public interface PaymentMapper extends MyMapper<Payment>{
 	
 	public List<Payment> getPaymentListByParams(HashMap<String, Object> params) throws Exception;
 	
-	public Payment getPaymentToVoid(Integer invoiceNo) throws Exception;
-	
 	public Payment getPaymentByInvoiceNo(Integer invoiceNo) throws Exception;
 	
-	public Payment getPaymentByPaymentId(Integer paymentId) throws Exception;
 	
-	public Integer insertPayment(Payment payment) throws Exception;
 }

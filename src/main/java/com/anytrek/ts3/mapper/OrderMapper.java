@@ -16,10 +16,6 @@ public interface OrderMapper extends MyMapper<Order> {
 	
 	public List<Order> getOrderListByParams(HashMap<String, Object> params) throws Exception;
 	
-	public Integer insertOrder(Order order) throws Exception;
-	
-	public Order getOrderByOrderId(Integer orderId) throws Exception;
-	
 	// does not work
 	public Order getLastOrder() throws Exception;
 	

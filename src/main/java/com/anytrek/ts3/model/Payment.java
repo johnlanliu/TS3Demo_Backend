@@ -3,7 +3,7 @@ package com.anytrek.ts3.model;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -22,7 +22,7 @@ import tk.mybatis.mapper.annotation.KeySql;
 public class Payment implements java.io.Serializable {
 
 	private static final long serialVersionUID = -5680559786861774469L;
-	
+
 	@Id
 	@KeySql(useGeneratedKeys = true)
 	@JsonView(View.Summary.class)
@@ -31,129 +31,125 @@ public class Payment implements java.io.Serializable {
 	private Integer paymentId;
 
 	@JsonView(View.Summary.class)
-	@Column(name = "amount", nullable = true, length = 19)
-	private Float amount;
-	
-	@JsonView(View.Summary.class)
-	@Column(name = "invoice_no", nullable = true, length = 8)
-	private Integer invoiceNo;
-	
-	@JsonView(View.Summary.class)
-	@Column(name = "customer", nullable = true, length = 100)
+	@Column(name = "customer", nullable = true, length = 36)
 	private String customer;
-	
-	@JsonView(View.Summary.class)
-	@Column(name = "invoice_date", nullable = true, length = 19)
-	private String invoiceDate;
-	
-	@JsonView(View.Summary.class)
-	@Column(name = "due_date", nullable = true, length = 19)
-	private String dueDate;
-	
+
 	@JsonView(View.Summary.class)
 	@Column(name = "status", nullable = true, length = 7)
 	private String status;
-	
+
 	@JsonView(View.Summary.class)
-	@Column(name = "sales", nullable = true, length = 100)
+	@Column(name = "invoice_no", nullable = true, length = 20)
+	private String invoiceNo;
+
+	@JsonView(View.Summary.class)
+	@Column(name = "invoice_date", nullable = true)
+	private Timestamp invoiceDate;
+
+	@JsonView(View.Summary.class)
+	@Column(name = "due_date", nullable = true)
+	private Timestamp dueDate;
+
+	@JsonView(View.Summary.class)
+	@Column(name = "device_id", nullable = true, length = 20)
+	private Long device_id;
+
+	@JsonView(View.Summary.class)
+	@Column(name = "sales", nullable = true, length = 36)
 	private String sales;
-	
+
 	@JsonView(View.Summary.class)
-	@Column(name = "billing_company", nullable = true, length = 100)
+	@Column(name = "billing_company", nullable = true, length = 64)
 	private String billingCompany;
-	
+
 	@JsonView(View.Summary.class)
-	@Column(name = "billing_contact", nullable = true, length = 100)
+	@Column(name = "billing_contact", nullable = true, length = 36)
 	private String billingContact;
-	
+
 	@JsonView(View.Summary.class)
-	@Column(name = "billing_number", nullable = true, length = 19)
+	@Column(name = "billing_number", nullable = true, length = 36)
 	private String billingNumber;
-	
+
 	@JsonView(View.Summary.class)
-	@Column(name = "billing_email", nullable = true, length = 100)
+	@Column(name = "billing_email", nullable = true, length = 36)
 	private String billingEmail;
-	
+
 	@JsonView(View.Summary.class)
-	@Column(name = "billing_address", nullable = true, length = 100)
+	@Column(name = "billing_address", nullable = true, length = 128)
 	private String billingAddress;
-	
+
 	@JsonView(View.Summary.class)
-	@Column(name = "billing_city", nullable = true, length = 100)
+	@Column(name = "billing_city", nullable = true, length = 18)
 	private String billingCity;
-	
+
 	@JsonView(View.Summary.class)
-	@Column(name = "billing_state", nullable = true, length = 100)
+	@Column(name = "billing_state", nullable = true, length = 18)
 	private String billingState;
-	
+
 	@JsonView(View.Summary.class)
-	@Column(name = "billing_country", nullable = true, length = 100)
+	@Column(name = "billing_country", nullable = true, length = 18)
 	private String billingCountry;
-	
+
 	@JsonView(View.Summary.class)
-	@Column(name = "billing_zip", nullable = true, length = 100)
-	private Integer billingZip;
-	
+	@Column(name = "billing_zip", nullable = true, length = 8)
+	private String billingZip;
+
 	@JsonView(View.Summary.class)
-	@Column(name = "shipping_company", nullable = true, length = 100) 
+	@Column(name = "shipping_company", nullable = true, length = 64)
 	private String shippingCompany;
-	
+
 	@JsonView(View.Summary.class)
-	@Column(name = "shipping_contact", nullable = true, length = 100) 
+	@Column(name = "shipping_contact", nullable = true, length = 36)
 	private String shippingContact;
-	
+
 	@JsonView(View.Summary.class)
-	@Column(name = "shipping_number", nullable = true, length = 19)
+	@Column(name = "shipping_number", nullable = true, length = 36)
 	private String shippingNumber;
-	
+
 	@JsonView(View.Summary.class)
-	@Column(name = "shipping_email", nullable = true, length = 100)
+	@Column(name = "shipping_email", nullable = true, length = 36)
 	private String shippingEmail;
-	
+
 	@JsonView(View.Summary.class)
-	@Column(name = "shipping_address", nullable = true, length = 100) 
+	@Column(name = "shipping_address", nullable = true, length = 128)
 	private String shippingAddress;
-	
+
 	@JsonView(View.Summary.class)
-	@Column(name = "shipping_city", nullable = true, length = 100)
+	@Column(name = "shipping_city", nullable = true, length = 18)
 	private String shippingCity;
-	
+
 	@JsonView(View.Summary.class)
-	@Column(name = "shipping_state", nullable = true, length = 100)
+	@Column(name = "shipping_state", nullable = true, length = 18)
 	private String shippingState;
-	
+
 	@JsonView(View.Summary.class)
-	@Column(name = "shipping_country", nullable = true, length = 100)
+	@Column(name = "shipping_country", nullable = true, length = 18)
 	private String shippingCountry;
-	
+
 	@JsonView(View.Summary.class)
-	@Column(name = "shipping_zip", nullable = true, length = 100)
-	private Integer shippingZip;
-	
+	@Column(name = "shipping_zip", nullable = true, length = 8)
+	private String shippingZip;
+
 	@JsonView(View.Summary.class)
-	@Column(name = "note", nullable = true, length = 300)
+	@Column(name = "note", nullable = true, length = 100)
 	private String note;
-	
+
 	@JsonView(View.Summary.class)
-	@Column(name = "shipping_via", nullable = true, length = 19)
+	@Column(name = "shipping_via", nullable = true, length = 64)
 	private String shippingVia;
-	
+
 	@JsonView(View.Summary.class)
-	@Column(name = "payment_term", nullable = true, length = 19)
-	private String paymentTerm;
-	
-	@JsonView(View.Summary.class)
-	@Column(name = "invoice_type", nullable = true, length = 19)
-	private String invoiceType;
-	
-	@JsonView(View.Summary.class)
-	@Column(name = "shipping_fee", nullable = true, length = 19)
+	@Column(name = "shipping_fee", nullable = true)
 	private Float shippingFee;
-	
+
 	@JsonView(View.Summary.class)
-	@Column(name = "tracking_no", nullable = true, length = 19)
-	private String trackingNo;
-	
+	@Column(name = "payment_term", nullable = true, length = 255)
+	private String paymentTerm;
+
+	@JsonView(View.Summary.class)
+	@Column(name = "amount", nullable = true)
+	private Float amount;
+
 	public Integer getPaymentId() {
 		return paymentId;
 	}
@@ -170,14 +166,6 @@ public class Payment implements java.io.Serializable {
 		this.amount = amount;
 	}
 
-	public Integer getInvoiceNo() {
-		return invoiceNo;
-	}
-
-	public void setInvoiceNo(Integer invoiceNo) {
-		this.invoiceNo = invoiceNo;
-	}
-
 	public String getCustomer() {
 		return customer;
 	}
@@ -186,28 +174,44 @@ public class Payment implements java.io.Serializable {
 		this.customer = customer;
 	}
 
-	public String getInvoiceDate() {
-		return invoiceDate;
-	}
-
-	public void setInvoiceDate(String invoiceDate) {
-		this.invoiceDate = invoiceDate;
-	}
-
-	public String getDueDate() {
-		return dueDate;
-	}
-
-	public void setDueDate(String dueDate) {
-		this.dueDate = dueDate;
-	}
-
 	public String getStatus() {
 		return status;
 	}
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getInvoiceNo() {
+		return invoiceNo;
+	}
+
+	public void setInvoiceNo(String invoiceNo) {
+		this.invoiceNo = invoiceNo;
+	}
+
+	public Timestamp getInvoiceDate() {
+		return invoiceDate;
+	}
+
+	public void setInvoiceDate(Timestamp invoiceDate) {
+		this.invoiceDate = invoiceDate;
+	}
+
+	public Timestamp getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(Timestamp dueDate) {
+		this.dueDate = dueDate;
+	}
+
+	public Long getDevice_id() {
+		return device_id;
+	}
+
+	public void setDevice_id(Long device_id) {
+		this.device_id = device_id;
 	}
 
 	public String getSales() {
@@ -258,6 +262,38 @@ public class Payment implements java.io.Serializable {
 		this.billingAddress = billingAddress;
 	}
 
+	public String getBillingCity() {
+		return billingCity;
+	}
+
+	public void setBillingCity(String billingCity) {
+		this.billingCity = billingCity;
+	}
+
+	public String getBillingState() {
+		return billingState;
+	}
+
+	public void setBillingState(String billingState) {
+		this.billingState = billingState;
+	}
+
+	public String getBillingCountry() {
+		return billingCountry;
+	}
+
+	public void setBillingCountry(String billingCountry) {
+		this.billingCountry = billingCountry;
+	}
+
+	public String getBillingZip() {
+		return billingZip;
+	}
+
+	public void setBillingZip(String billingZip) {
+		this.billingZip = billingZip;
+	}
+
 	public String getShippingCompany() {
 		return shippingCompany;
 	}
@@ -298,86 +334,6 @@ public class Payment implements java.io.Serializable {
 		this.shippingAddress = shippingAddress;
 	}
 
-	public String getNote() {
-		return note;
-	}
-
-	public void setNote(String note) {
-		this.note = note;
-	}
-
-	public String getShippingVia() {
-		return shippingVia;
-	}
-
-	public void setShippingVia(String shippingVia) {
-		this.shippingVia = shippingVia;
-	}
-
-	public String getPaymentTerm() {
-		return paymentTerm;
-	}
-
-	public void setPaymentTerm(String paymentTerm) {
-		this.paymentTerm = paymentTerm;
-	}
-
-	public String getInvoiceType() {
-		return invoiceType;
-	}
-
-	public void setInvoiceType(String invoiceType) {
-		this.invoiceType = invoiceType;
-	}
-
-	public Float getShippingFee() {
-		return shippingFee;
-	}
-
-	public void setShippingFee(Float shippingFee) {
-		this.shippingFee = shippingFee;
-	}
-
-	public String getTrackingNo() {
-		return trackingNo;
-	}
-
-	public void setTrackingNo(String trackingNo) {
-		this.trackingNo = trackingNo;
-	}
-
-	public String getBillingCity() {
-		return billingCity;
-	}
-
-	public void setBillingCity(String billingCity) {
-		this.billingCity = billingCity;
-	}
-
-	public String getBillingState() {
-		return billingState;
-	}
-
-	public void setBillingState(String billingState) {
-		this.billingState = billingState;
-	}
-
-	public String getBillingCountry() {
-		return billingCountry;
-	}
-
-	public void setBillingCountry(String billingCountry) {
-		this.billingCountry = billingCountry;
-	}
-
-	public Integer getBillingZip() {
-		return billingZip;
-	}
-
-	public void setBillingZip(Integer billingZip) {
-		this.billingZip = billingZip;
-	}
-
 	public String getShippingCity() {
 		return shippingCity;
 	}
@@ -402,13 +358,44 @@ public class Payment implements java.io.Serializable {
 		this.shippingCountry = shippingCountry;
 	}
 
-	public Integer getShippingZip() {
+	public String getShippingZip() {
 		return shippingZip;
 	}
 
-	public void setShippingZip(Integer shippingZip) {
+	public void setShippingZip(String shippingZip) {
 		this.shippingZip = shippingZip;
 	}
-	
-	
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
+
+	public String getShippingVia() {
+		return shippingVia;
+	}
+
+	public void setShippingVia(String shippingVia) {
+		this.shippingVia = shippingVia;
+	}
+
+	public Float getShippingFee() {
+		return shippingFee;
+	}
+
+	public void setShippingFee(Float shippingFee) {
+		this.shippingFee = shippingFee;
+	}
+
+	public String getPaymentTerm() {
+		return paymentTerm;
+	}
+
+	public void setPaymentTerm(String paymentTerm) {
+		this.paymentTerm = paymentTerm;
+	}
+
 }

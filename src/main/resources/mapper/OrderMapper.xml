@@ -15,37 +15,6 @@
 			</if>
 		</trim>
 	</select>
-	<insert id="insertOrder" 
-		parameterType="com.anytrek.ts3.model.Order"
-		>
-		INSERT INTO t_order(type, customer, description, status, 
-		invoice_no, invoice_date, due_date, tracking_no, sales,
-		create_time, billing_company, billing_contact, billing_number,
-		billing_email, billing_address, billing_city, billing_state, 
-		billing_country, billing_zip, shipping_company, shipping_contact,
-		shipping_number, shipping_email, shipping_address, shipping_city,
-		shipping_state, shipping_country, shipping_zip, note, shipping_via, 
-		shipping_fee, same_as_billing, payment_term)
-		 VALUES(#{type}, #{customer}, #{description}, 
-		#{status}, #{invoiceNo}, #{invoiceDate}, #{dueDate},
-		#{trackingNo}, #{sales}, #{createTime}, #{billingCompany}, #{billingContact},
-		#{billingNumber}, #{billingEmail}, #{billingAddress}, #{billingCity}, 
-		#{billingState}, #{billingCountry}, #{billingZip}, #{shippingCompany}, 
-		#{shippingContact}, #{shippingNumber}, #{shippingEmail}, #{shippingAddress}, 
-		#{shippingCity}, #{shippingState}, #{shippingCountry}, #{shippingZip}, 
-		#{note}, #{shippingVia}, #{shippingFee}, #{sameAsBilling}, #{paymentTerm})
-		<selectKey resultType="Integer" order="AFTER" 
-			keyProperty="orderId">
-			SELECT LAST_INSERT_ID() as orderId
-			</selectKey>
-	</insert>
-	<select id="getOrderByOrderId"
-		parameterType="java.lang.Integer"
-		resultType = "com.anytrek.ts3.model.Order">
-		<![CDATA[
-			select * from t_order where order_id = #{orderId} 
-		]]>
-	</select>
 	<select id="getLastOrder" resultType="com.anytrek.ts3.model.Order">
 		SELECT * FROM t_order ORDER BY order_id DESC LIMIT 1
 	</select>
