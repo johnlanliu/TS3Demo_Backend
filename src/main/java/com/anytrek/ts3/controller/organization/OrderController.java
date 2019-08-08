@@ -59,14 +59,13 @@ public class OrderController extends ControllerBase {
 	@RequiresPermissions("org:order:view")
 	@JsonView(View.Summary.class)
 	@RequestMapping(value = { "/getOrderList" }, method = RequestMethod.GET)
-	public String getOrderList(@RequestParam(value = "invoiceNo", required = false) Integer invoiceNo,
-			@RequestParam(value = "status", required = false) String status, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public String getOrderList(@RequestParam(value = "invoiceNo", required = false) String invoiceNo,
+			@RequestParam(value = "status", required = false) String status) throws Exception {
 		HashMap<String, Object> params = new HashMap<>();
 		if (!StringUtils.isEmpty(status)) {
 			params.put("status", status);
 		}
-		if (invoiceNo != null) {
+		if (!StringUtils.isEmpty(invoiceNo)) {
 			params.put("invoiceNo", invoiceNo);
 		}
 		List<Order> viewList = orderMapper.getOrderListByParams(params);
@@ -108,8 +107,7 @@ public class OrderController extends ControllerBase {
 	@RequiresPermissions("org:order:add")
 	@JsonView(View.Summary.class)
 	@RequestMapping(value = { "/addOrder" }, method = RequestMethod.POST)
-	public Order addOrder(@RequestBody(required = true) String requestOrder, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public Order addOrder(@RequestBody(required = true) String requestOrder) throws Exception {
 		if (StringUtils.isEmpty(requestOrder)) {
 			throw new WebException(ErrorCode.ORDER_PARAMETER_ERROR, "ORDER_PARAMETER_ERROR!");
 		}
@@ -180,8 +178,9 @@ public class OrderController extends ControllerBase {
 	@RequiresPermissions("org:order:view")
 	@JsonView(View.Summary.class)
 	@RequestMapping(value = { "/getLastInvoiceNo" }, method = RequestMethod.GET)
-	public String getLastInvoiceNo() throws Exception {
-		return orderMapper.getLastOrder().getInvoiceNo();
+	public Order getLastInvoiceNo() throws Exception {
+		Order order = orderMapper.getLastOrder();
+		return order;
 	}
 
 	/**

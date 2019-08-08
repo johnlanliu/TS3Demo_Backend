@@ -19,7 +19,7 @@ import tk.mybatis.mapper.annotation.KeySql;
 @Table(name = "t_order")
 public class Order implements java.io.Serializable {
 
-	private static final long serialVersionUID = 2594831637707167672L;
+	private static final long serialVersionUID = 758260667261782322L;
 
 	@Id
 	@KeySql(useGeneratedKeys = true)
@@ -58,7 +58,7 @@ public class Order implements java.io.Serializable {
 
 	@JsonView(View.Summary.class)
 	@Column(name = "device_id", nullable = true, length = 20)
-	private Long device_id;
+	private Long deviceId;
 
 	@JsonView(View.Summary.class)
 	@Column(name = "sales", nullable = true, length = 36)
@@ -224,12 +224,12 @@ public class Order implements java.io.Serializable {
 		this.dueDate = dueDate;
 	}
 
-	public Long getDevice_id() {
-		return device_id;
+	public Long getDeviceId() {
+		return deviceId;
 	}
 
-	public void setDevice_id(Long device_id) {
-		this.device_id = device_id;
+	public void setDeviceId(Long deviceId) {
+		this.deviceId = deviceId;
 	}
 
 	public String getSales() {
