@@ -15,8 +15,8 @@
 			</if>
 		</trim>
 	</select>
-	<select id="getLastOrder" resultType="com.anytrek.ts3.model.Order">
-		SELECT * FROM t_order ORDER BY order_id DESC LIMIT 1
+	<select id="getLastOrder" resultType="java.lang.String">
+		<![CDATA[select invoice_id from t_order order by order_id desc limit 1 ]]>
 	</select>
 	
 	<select id="getOrderByInvoiceNo"

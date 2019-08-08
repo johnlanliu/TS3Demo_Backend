@@ -178,9 +178,12 @@ public class OrderController extends ControllerBase {
 	@RequiresPermissions("org:order:view")
 	@JsonView(View.Summary.class)
 	@RequestMapping(value = { "/getLastInvoiceNo" }, method = RequestMethod.GET)
-	public Order getLastInvoiceNo() throws Exception {
-		Order order = orderMapper.getLastOrder();
-		return order;
+	public String getLastInvoiceNo() throws Exception {
+		String invoiceNo = orderMapper.getLastOrder();
+		if(StringUtils.isEmpty(invoiceNo)) {
+			return "0";
+		}
+		return invoiceNo;
 	}
 
 	/**

@@ -17,7 +17,7 @@ public interface OrderMapper extends MyMapper<Order> {
 	public List<Order> getOrderListByParams(HashMap<String, Object> params) throws Exception;
 	
 	// does not work
-	public Order getLastOrder() throws Exception;
+	public String getLastOrder() throws Exception;
 	
 	public Order getOrderByInvoiceNo(Integer invoiceNo) throws Exception;
 }
