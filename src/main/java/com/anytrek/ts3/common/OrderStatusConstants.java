@@ -11,4 +11,8 @@ public class OrderStatusConstants {
 	public static final int SHIPPED = 1;
 	
 	public static final int DELIVERED = 2;
+	
+	public static final int PENDING = 3;
+	
+	
 }

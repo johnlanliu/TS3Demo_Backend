@@ -16,7 +16,7 @@
 		</trim>
 	</select>
 	<select id="getLastOrder" resultType="java.lang.String">
-		<![CDATA[select invoice_id from t_order order by order_id desc limit 1 ]]>
+		<![CDATA[select invoice_no from t_order order by order_id desc limit 1 ]]>
 	</select>
 	
 	<select id="getOrderByInvoiceNo"
